@@ -1,0 +1,315 @@
+import React, { Component } from "react";
+import {Link, Redirect} from 'react-router-dom';
+import "./JobSeeker.css";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { resumeNotCreated , jobSearchResult } from "./redux/actions";
+import axios from "axios";
+
+class JobSeeker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      jobTitle: "",
+      location: "",
+      redirect:false
+    }
+  }
+
+  // check resume created or not
+  componentDidMount = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/resumes/${this.props._id}`, {
+        headers: {
+            'auth_token': this.props.auth_token
+        }
+    });
+    
+      if(!response.data)
+      this.props.resumeNotCreated();
+  } catch (error) {
+      console.log("there is an error", error.response);
+  }
+  } 
+
+  handleChange = (e) => {
+    switch (e.target.name) {
+      case "jobTitle": {
+        this.setState({ jobTitle: e.target.value },()=>{console.log(this.state.jobTitle)});
+        break;
+      }
+      case "location": {
+        this.setState({ location: e.target.value },()=>{console.log(this.state.location)});
+        break;
+      }
+      default:
+        return;
+     }
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!this.state.jobTitle && !this.state.location) {
+        console.log("both fields can't be empty")
+        return;
+    }
+
+    this.searchJob(this.state.jobTitle,this.state.location);
+    
+  };
+
+
+  //  API call
+  searchJob = async (jobTitle, location) => {
+      try {
+          const response = await axios.get(`http://localhost:3001/api/jobs?jobTitle=${jobTitle}&location=${location}`,
+          {
+              headers: {
+                  'auth_token': this.props.auth_token,
+              }
+          });
+          console.log(response.data)
+          this.props.jobSearchResult(response.data);
+          // this.props.history.push('/find-jobs')
+          this.setState({redirect:true})
+         
+         
+          
+      } catch (error) {
+          console.log("there is an error", error);
+      }
+      
+  };
+
+  handleRegionClick = async (region) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/jobs?location=${region}`,
+      {
+          headers: {
+              'auth_token': this.props.auth_token,
+          }
+      });
+      console.log(response.data)
+      this.props.jobSearchResult(response.data);
+      // this.props.history.push('/find-jobs')
+      this.setState({redirect:true})
+     
+      
+  } catch (error) {
+      console.log("there is an error", error);
+  }
+  } 
+
+  handleCompanyClick = async (company) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/jobs?company_name=${company}`,
+      {
+          headers: {
+              'auth_token': this.props.auth_token,
+          }
+      });
+      console.log(response.data)
+      this.props.jobSearchResult(response.data);
+      // this.props.history.push('/find-jobs')
+      this.setState({redirect:true})
+     
+      
+  } catch (error) {
+      console.log("there is an error", error);
+  }
+  }
+
+  handleCategoryClick = async (category) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/jobs?role=${category}`,
+      {
+          headers: {
+              'auth_token': this.props.auth_token,
+          }
+      });
+      console.log(response.data)
+      this.props.jobSearchResult(response.data);
+      // this.props.history.push('/find-jobs')
+      this.setState({redirect:true})
+     
+      
+  } catch (error) {
+      console.log("there is an error", error);
+  }
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.redirect?  <Redirect to="/find-jobs" /> : null }
+        <nav className="navbar navbar-default navbar-expand-xl navbar-light">
+          <div className="navbar-header d-flex col">
+            <a className="navbar-brand" href="/">
+              Job<b style={{ color: "#19aa8d" }}>Hub</b>
+            </a>
+          </div>
+          {/*  Collection of nav links, forms, and other content for toggling  */}
+          <div
+            id="navbarCollapse"
+            className="collapse navbar-collapse justify-content-start"
+          >
+            <ul className="nav navbar-nav">
+              <li className="nav-item">
+                <a href="/" className="nav-link">
+                  Home
+                </a>
+              </li>
+              {!this.props.isResumeCreated ? <li className="nav-item ml-5">
+                <Link to="/create-resume" className="nav-link">
+                  Create-Resume
+                </Link>
+              </li> : null }
+              <li className="nav-item ml-5">
+                <a href="/" className="nav-link">
+                  My Applyed Jobs
+                </a>
+              </li>
+              <li className="nav-item ml-5">
+                <a href="/" className="nav-link">
+                 Create Alert
+                </a>
+              </li>
+            </ul>
+
+            <ul className="nav navbar-nav navbar-right ml-auto">
+              <li className="nav-item mr-5">
+                <a href="/" className="nav-link notifications">
+                  <i className="fa fa-bell-o"></i>
+                  <span className="badge">1</span>
+                </a>
+              </li>
+              {/* <li className="nav-item">
+                <a href="/" className="nav-link messages">
+                  <i className="fa fa-envelope-o"></i>
+                  <span className="badge">10</span>
+                </a>
+              </li> */}
+              <li className="nav-item dropdown">
+                <a
+                  href="/"
+                  data-toggle="dropdown"
+                  className="nav-link dropdown-toggle user-action"
+                >
+                  <img
+                    src="https://www.tutorialrepublic.com/examples/images/avatar/2.jpg"
+                    className="avatar"
+                    alt="Avatar"
+                  />
+                  Paula Wilson
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="/" className="dropdown-item">
+                      <i className="fa fa-user-o"></i> Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/" className="dropdown-item">
+                      <i className="fa fa-sliders"></i> Settings
+                    </a>
+                  </li>
+                  <li className="divider dropdown-divider"></li>
+                  <li>
+                    <a href="/" className="dropdown-item">
+                      <i className="material-icons">&#xE8AC;</i> Logout
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        {/*  */}
+        <div className="jumbotron  pt-1">
+          <h2 className=" text-center text-white">Let Us Find a Job For You</h2>
+          <form className="text-white" onSubmit={(e) => this.handleSubmit(e)}>
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <input
+                  type="text"
+                  name="jobTitle"
+                  className="form-control"
+                  placeholder="Job Title"
+                  onChange={(e)=>{this.handleChange(e)}}
+                />
+              </div>
+              <div className="form-group col-md-5">
+                <input
+                  type="text"
+                  name="location"
+                  className="form-control"
+                  placeholder="Location"
+                  onChange={(e)=>{this.handleChange(e)}}
+                />
+              </div>
+              <div className="form-group col-md-2">
+                <button className="form-control btn btn-warning">Search Jobs</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        {/*  */}
+        { !this.props.isResumeCreated ? <div className="text-center pl-2 pr-2 mmt">
+          <span className="bold-text">Let employers find you</span>{" "}
+          <Link to="/create-resume" >
+          <button
+            type="button"
+            className="btn btn-outline-info info border-info ml-4"
+          >
+            Create Your Resume
+          </button>
+          </Link>
+        </div> : null }
+        {/*  */}
+        
+          <div className='pl-5 pr-5 mt-3'>
+            <li className="list-group-item list-group-item-warning p-1"><h4 className="m-1 ml-4"> Job vacancies by Region :- </h4></li>
+            <div className="pl-5 pr-5 pb-5">
+            {this.props.region.map((region,index)=>{
+              return <button type="button" key={index} onClick={()=>{this.handleRegionClick(region)}} className="btn  btn-outline-secondary m-2">{region}</button>
+            })}
+            </div>
+          </div>
+          {/*  */}
+          <div className='pl-5 pr-5 mt-3'>
+            <li className="list-group-item list-group-item-warning p-1"><h4 className="m-1 ml-4"> Job vacancies by Companies :- </h4></li>
+            <div className="pl-5 pr-5 pb-5">
+            {this.props.companies.map((company,index)=>{
+              return <button type="button" key={index} onClick={()=>{this.handleCompanyClick(company)}} className="btn  btn-outline-secondary m-2">{company}</button>
+            })}
+            </div>
+          </div>
+          {/*  */}
+          <div className='pl-5 pr-5 mt-3'>
+            <li className="list-group-item list-group-item-warning p-1"><h4 className="m-1 ml-4"> Job vacancies by Category/Role :- </h4></li>
+            <div className="pl-5 pr-5 pb-5">
+            {this.props.category.map((category,index)=>{
+              return <button type="button" key={index} onClick={()=>{this.handleCategoryClick(category)}} className="btn  btn-outline-secondary m-2">{category}</button>
+            })}
+            </div>
+          </div>
+        
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {region:state.region,companies:state.companies,category:state.category,_id:state._id,auth_token:state.auth_token,isResumeCreated:state.isResumeCreated};
+};
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      resumeNotCreated,
+      jobSearchResult
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps) (JobSeeker);

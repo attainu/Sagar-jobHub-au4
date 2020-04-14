@@ -3,13 +3,18 @@ require('./db');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
+var jobRouter = require('./routes/job');
+var resumeRouter = require('./routes/resume');
 
 var app = express();
-
+app.use(cors({
+    exposedHeaders: ['auth_token'],
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
@@ -20,5 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/users', authRouter);
+app.use('/api/jobs', jobRouter);
+app.use('/api/resumes', resumeRouter);
 
 module.exports = app;
