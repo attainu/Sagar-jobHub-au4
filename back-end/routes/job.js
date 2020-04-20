@@ -1,5 +1,5 @@
 var router = require('express').Router();
- const Job = require('../models/jobModel');
+const Job = require('../models/jobModel');
 
 const { jobValidation } = require("../validators/bodyValidator");
 
@@ -38,7 +38,7 @@ router.post('/', varify , varifyRecruiter , jobValidation, async (req, res, next
 
 /* GET get jobs  */
 router.get('/', varify , async (req, res, next) => {
-  const { jobTitle , location , company_name , role } = req.query;
+  const { jobTitle , location , company_name , role , jobId} = req.query;
 
   if(!jobTitle && location){
     try {
@@ -92,6 +92,14 @@ router.get('/', varify , async (req, res, next) => {
     try {
       const jobs = await Job.find({ role : role.toLowerCase() });
       res.status(200).send(jobs);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  else if(jobId){
+    try {
+      const job = await Job.findById(jobId);
+      res.status(200).send(job);
     } catch (error) {
       console.log(error);
     }

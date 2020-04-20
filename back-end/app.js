@@ -10,7 +10,8 @@ var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var jobRouter = require('./routes/job');
 var resumeRouter = require('./routes/resume');
-
+var appliedJobRouter = require('./routes/appliedJob');
+var savedResumeRouter = require('./routes/savedResume')
 var app = express();
 app.use(cors({
     exposedHeaders: ['auth_token'],
@@ -27,5 +28,7 @@ app.use('/', indexRouter);
 app.use('/api/users', authRouter);
 app.use('/api/jobs', jobRouter);
 app.use('/api/resumes', resumeRouter);
+app.use('/api/applied-jobs',appliedJobRouter);
+app.use('/api/saved-resumes',savedResumeRouter);
 
 module.exports = app;

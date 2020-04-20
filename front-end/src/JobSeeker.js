@@ -32,6 +32,7 @@ class JobSeeker extends Component {
   }
   } 
 
+  // handle input change
   handleChange = (e) => {
     switch (e.target.name) {
       case "jobTitle": {
@@ -142,12 +143,12 @@ class JobSeeker extends Component {
   render() {
     return (
       <div>
-        {this.state.redirect?  <Redirect to="/find-jobs" /> : null }
+        {this.state.redirect?  <Redirect push  to="/find-jobs" /> : null }
         <nav className="navbar navbar-default navbar-expand-xl navbar-light">
           <div className="navbar-header d-flex col">
-            <a className="navbar-brand" href="/">
+            <Link className="navbar-brand" to="/">
               Job<b style={{ color: "#19aa8d" }}>Hub</b>
-            </a>
+            </Link>
           </div>
           {/*  Collection of nav links, forms, and other content for toggling  */}
           <div
@@ -156,9 +157,9 @@ class JobSeeker extends Component {
           >
             <ul className="nav navbar-nav">
               <li className="nav-item">
-                <a href="/" className="nav-link">
+                <Link to="/" className="nav-link">
                   Home
-                </a>
+                </Link>
               </li>
               {!this.props.isResumeCreated ? <li className="nav-item ml-5">
                 <Link to="/create-resume" className="nav-link">
@@ -166,14 +167,14 @@ class JobSeeker extends Component {
                 </Link>
               </li> : null }
               <li className="nav-item ml-5">
-                <a href="/" className="nav-link">
+                <Link to="/my-applied-jobs" className="nav-link">
                   My Applyed Jobs
-                </a>
+                </Link>
               </li>
               <li className="nav-item ml-5">
-                <a href="/" className="nav-link">
+                <Link to="/" className="nav-link">
                  Create Alert
-                </a>
+                </Link>
               </li>
             </ul>
 
@@ -207,11 +208,6 @@ class JobSeeker extends Component {
                   <li>
                     <a href="/" className="dropdown-item">
                       <i className="fa fa-user-o"></i> Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="dropdown-item">
-                      <i className="fa fa-sliders"></i> Settings
                     </a>
                   </li>
                   <li className="divider dropdown-divider"></li>

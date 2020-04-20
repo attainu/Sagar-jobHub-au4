@@ -19,13 +19,105 @@ const initialState = {
     date: "",
     isResumeCreated:true,
     // jobs
-    jobs:[],
+    jobs:[ {
+        "skills": [
+            "asdg"
+        ],
+        "date": "2020-04-11T21:31:35.577Z",
+        "_id": "5e9237427500b83498b56291",
+        "location": "pune",
+        "company_name": "company_name",
+        "total_employee": "total_employee",
+        "your_name": "your_name",
+        "phone_number": "phone_number",
+        "jobtitle": "jobtitle",
+        "role": "role",
+        "job_type": "job_type",
+        "min_experience": 0,
+        "max_experience": 100,
+        "min_salary": "min_salary",
+        "max_salary": "max_salary",
+        "maximum_hires": "maximum_hires",
+        "description": "description",
+        "__v": 0
+    },
+    {
+        "skills": [
+            "asdg"
+        ],
+        "date": "2020-04-11T21:49:20.889Z",
+        "_id": "5e923b71fc2ed81f64276263",
+        "user_id": "am a user id 23223h2ggjhgjhgj32",
+        "location": "pune",
+        "company_name": "company_name",
+        "total_employee": "total_employee",
+        "your_name": "your_name",
+        "phone_number": "phone_number",
+        "jobtitle": "JOBTITLEEEEE",
+        "role": "role",
+        "job_type": "job_type",
+        "min_experience": 0,
+        "max_experience": 100,
+        "min_salary": "min_salary",
+        "max_salary": "max_salary",
+        "maximum_hires": "maximum_hires",
+        "description": "description",
+        "__v": 0
+    },
+    {
+        "skills": [
+            "asdg"
+        ],
+        "date": "2020-04-11T21:31:35.577Z",
+        "_id": "5e9237427500b83498b56291",
+        "location": "pune",
+        "company_name": "company_name",
+        "total_employee": "total_employee",
+        "your_name": "your_name",
+        "phone_number": "phone_number",
+        "jobtitle": "jobtitle",
+        "role": "role",
+        "job_type": "job_type",
+        "min_experience": 0,
+        "max_experience": 100,
+        "min_salary": "min_salary",
+        "max_salary": "max_salary",
+        "maximum_hires": "maximum_hires",
+        "description": "description",
+        "__v": 0
+    },
+    {
+        "skills": [
+            "asdg"
+        ],
+        "date": "2020-04-11T21:49:20.889Z",
+        "_id": "5e923b71fc2ed81f64276263",
+        "user_id": "am a user id 23223h2ggjhgjhgj32",
+        "location": "pune",
+        "company_name": "company_name",
+        "total_employee": "total_employee",
+        "your_name": "your_name",
+        "phone_number": "phone_number",
+        "jobtitle": "JOBTITLEEEEE",
+        "role": "role",
+        "job_type": "job_type",
+        "min_experience": 0,
+        "max_experience": 100,
+        "min_salary": "min_salary",
+        "max_salary": "max_salary",
+        "maximum_hires": "maximum_hires",
+        "description": "description",
+        "__v": 0
+    }],
+    job:null,
+    appliedJob:null,
    
     // search data
     region:['Pune','Hyderabad','Bengaluru','Rajkot','Kolkata','Mumbai','Jaipur','Lucknow','Surat','Kanpur','Ahmedabad','Chennai','Delhi','Chandigarh','Gurgaon','Noida'],
     companies:['company_name','Flipkart','Amazon','Oyo','One97','Uber','Swiggy','DHL','Tata','Zomato','Alphabet','Reliance','Bajaj','Paytm','Adobe'],
-    category : ['Role','Recruitment Consultant','Interior Designer','Cashier','Application Developer','Devops Engineer','Php Developer','Java Script Developer','Senior Java Developer','Senior Web Designer','UI/UX Designer','Unix Engineer','Web Application Developer','Web Designer - Trainee','IT Software Fresher','Networking Manager','Webmaster','Computer Operator','Amazon','Banking','AngularJS Developer','Photoshop','Corel Draw','After Effects','Core PHP','Jquery Expert','Digital Marketing','Content Writing','Blog Posting','Social Media Marketing','Bootstrap','Manual Testing','Operations Manager','Java Full Stack Developer','Javascript','Nodejs','Programmers','Game Developer','Graphic Designer','Automation Fresher','Internship','Trainee']
-
+    category : ['Role','Recruitment Consultant','Interior Designer','Cashier','Application Developer','Devops Engineer','Php Developer','Java Script Developer','Senior Java Developer','Senior Web Designer','UI/UX Designer','Unix Engineer','Web Application Developer','Web Designer - Trainee','IT Software Fresher','Networking Manager','Webmaster','Computer Operator','Amazon','Banking','AngularJS Developer','Photoshop','Corel Draw','After Effects','Core PHP','Jquery Expert','Digital Marketing','Content Writing','Blog Posting','Social Media Marketing','Bootstrap','Manual Testing','Operations Manager','Java Full Stack Developer','Javascript','Nodejs','Programmers','Game Developer','Graphic Designer','Automation Fresher','Internship','Trainee'],
+    resumes:[],
+    resume:null
 }
 
 const reducer = (state = initialState, action) => {
@@ -61,13 +153,58 @@ const reducer = (state = initialState, action) => {
         }
         case 'JOB-SEARCH-RESULT': { 
             copyOfState.jobs = action.payload;
-            
+            return copyOfState;
+        }
+        case 'JOB-INDEX': { 
+            let obj = copyOfState.jobs[action.payload];
+            obj.index = action.payload;
+            copyOfState.job = obj;
+            return copyOfState;
+        }
+        case 'APPLIED-SUCCESSFULLY': { 
+            copyOfState.jobs[action.payload.index].status = 'APPLIED SUCCESSFULLY';
+
+            copyOfState.job = copyOfState.jobs[action.payload.index];
+            return copyOfState;
+        }
+        case 'ALREADY-APPLIED': { 
+            copyOfState.jobs[action.payload.index].status = 'ALREADY-APPLIED';
+            copyOfState.job = copyOfState.jobs[action.payload.index];
+            return copyOfState;
+        }
+        case 'APPLIED-JOB': { 
+            copyOfState.appliedJob = action.payload;
+            return copyOfState;
+        }
+        case 'RESUME-SEARCH-RESULT': { 
+            copyOfState.resumes = action.payload;
+            return copyOfState;
+        }
+        case 'RESUME-INDEX': { 
+            let obj = copyOfState.resumes[action.payload];
+            obj.index = action.payload;
+            copyOfState.resume = obj;
+            return copyOfState;
+        }
+        case 'ADDED-SUCCESSFULLY': { 
+            copyOfState.resumes[action.payload.index].status = 'ADDED SUCCESSFULLY';
+
+            copyOfState.resume = copyOfState.resumes[action.payload.index];
+            return copyOfState;
+        }
+        case 'ALREADY-ADDED': { 
+            copyOfState.resumes[action.payload.index].status = 'ALREADY ADDED';
+            copyOfState.resume = copyOfState.resumes[action.payload.index];
+            return copyOfState;
+        }
+        case 'SAVED-RESUME': { 
+            copyOfState.resume = action.payload;
             return copyOfState;
         }
         default:
             return state;
     }
-    // return copyOfState;
+
 }
 
 const store = createStore(reducer, applyMiddleware(thunk));

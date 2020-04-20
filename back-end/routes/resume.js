@@ -41,17 +41,90 @@ router.post('/', varify , varifyJobseeker , resumeValidation, async (req, res, n
 });
 
 /* GET get a Resume  */
-router.get('/:_id', varify , varifyJobseeker , async (req, res, next) => {
-  console.log("_id",req.body._id)
-  try {
-    const resumeExist = await Resume.findOne({ user_id: req.params._id });
-    console.log("resumeExist",resumeExist);
-    if (resumeExist) return res.status(200).send(true);
-    else
-    res.status(200).send(false);
-  } catch (error) {
-    res.status(400).send(error);
+router.get('/:_id', varify , async (req, res, next) => {
+
+  if(req.user.role === 'recruiter'){
+    try {
+      const resume = await Resume.findById(req.params._id);
+      res.status(200).send(resume);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  } else { 
+    try {
+      const resumeExist = await Resume.findOne({ user_id: req.params._id });
+      if (resumeExist) return res.status(200).send(true);
+      else
+      res.status(200).send(false);
+    } catch (error) {
+      res.status(400).send(error);
+    }
   }
+  
+});
+
+/* GET get resumes  */
+router.get('/', varify , async (req, res, next) => {
+  const { resumeTitle , location } = req.query;
+  if(!resumeTitle && location){
+    try {
+      const resumes = await Resume.find({ location :location.toLowerCase()});
+      res.status(200).send(resumes);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  else if(resumeTitle && !location){
+    try {
+      let resumeArray = [];
+      const resumes = await Resume.find();
+      resumes.map((resume)=>{
+        if(resume.resume_headline.toLowerCase().includes(resumeTitle.toLowerCase()) || 
+           resume.course.toLowerCase().includes(resumeTitle.toLowerCase())
+        ) {
+          resumeArray.push(resume);
+        }else if(resume.skills.length){
+          resume.skills.map((skill)=>{
+            if(skill.toLowerCase().includes(resumeTitle.toLowerCase())) {
+            resumeArray.push(resume);
+            }
+          })
+        }
+      })
+      res.status(200).send(resumeArray);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  else if(resumeTitle && location){
+    try {
+      let resumeArray = [];
+      const resumes = await Resume.find();
+      resumes.map((resume)=>{
+        if(resume.location.toLowerCase().includes(location.toLowerCase())){
+            if( resume.resume_headline.toLowerCase().includes(resumeTitle.toLowerCase()) || 
+                resume.course.toLowerCase().includes(resumeTitle.toLowerCase())
+            ) {
+              resumeArray.push(resume);
+            }else if( resume.skills.length){
+              resume.skills.map((skill)=>{
+                if(skill.toLowerCase().includes(resumeTitle.toLowerCase())) {
+                resumeArray.push(resume);
+                }
+              })
+            }
+        }
+      })
+      res.status(200).send(resumeArray);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    res.send([]);
+  }
+
 });
 
 module.exports = router;

@@ -78,7 +78,32 @@ const resumeValidation = (req,res,next) => {
     next();
 }
 
+const appliedJobValidation = (req,res,next) => {
+    const schema = Joi.object({
+        job_id: Joi.string().min(3).max(255).required(),
+        applier_id: Joi.string().min(3).max(255).required(),
+        status: Joi.string().min(5).max(10)
+    })
+
+    const {error} = schema.validate(req.body)
+    if(error) return res.status(400).send(error.details[0].message);
+    next();
+}
+
+const savedResumeValidation = (req,res,next) => {
+    const schema = Joi.object({
+        resume_id: Joi.string().min(3).max(255).required(),
+        saver_id: Joi.string().min(3).max(255).required()        
+    })
+
+    const {error} = schema.validate(req.body)
+    if(error) return res.status(400).send(error.details[0].message);
+    next();
+}
+
 module.exports.signUpValidation = signUpValidation;
 module.exports.signInValidation = signInValidation;
 module.exports.jobValidation = jobValidation;
 module.exports.resumeValidation = resumeValidation;
+module.exports.appliedJobValidation = appliedJobValidation;
+module.exports.savedResumeValidation = savedResumeValidation;

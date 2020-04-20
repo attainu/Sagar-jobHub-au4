@@ -52,6 +52,7 @@ router.post('/sign-in', signInValidation, async (req, res, next) => {
       name: user.name,
       email: user.email
     }, process.env.TOKEN_SECRET)
+    
     res.status(200).header('auth_token', token).send({
       role: user.role,
       date: user.date,

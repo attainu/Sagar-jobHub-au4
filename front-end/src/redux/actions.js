@@ -42,6 +42,65 @@ export function resumeNotCreated() {
 };
 
 export function jobSearchResult(jobs) {
-    
     return {type:"JOB-SEARCH-RESULT",payload:jobs}
+};
+
+export function jobIndex(jobIndex) {
+    return {type:"JOB-INDEX",payload:jobIndex}
+};
+
+
+export function applyJob(job_id,applier_id,auth_token , index) {   
+    return async (dispatch) => {
+        try {
+             const response = await axios.post('http://localhost:3001/api/applied-jobs',{job_id : job_id ,applier_id : applier_id}, 
+             {
+                 headers: {
+                     'auth_token': auth_token,
+                 }
+             });
+             if(response)
+             return dispatch({type:'APPLIED-SUCCESSFULLY',payload:{index:index}});
+        } catch (error) {
+             return dispatch({type:'ALREADY-APPLIED',payload:{index:index}});
+        }
+    }
+   
+}
+
+export function appliedJob(appliedJob) {
+    return {type:"APPLIED-JOB",payload:appliedJob}
+};
+
+export function resumeSearchResult(resumes) {
+    return {type:"RESUME-SEARCH-RESULT",payload:resumes}
+};
+
+export function resumeIndex(resumeIndex) {
+    return {type:"RESUME-INDEX",payload:resumeIndex}
+};
+
+
+export function saveResume(resume_id,saver_id,auth_token , index) {   
+    return async (dispatch) => {
+        try {
+             const response = await axios.post('http://localhost:3001/api/saved-resumes',{resume_id : resume_id ,saver_id : saver_id}, 
+             {
+                 headers: {
+                     'auth_token': auth_token,
+                 }
+             });
+             
+             if(response)
+             return dispatch({type:'ADDED-SUCCESSFULLY',payload:{index:index}});
+        } catch (error) {
+            
+             return dispatch({type:'ALREADY-ADDED',payload:{index:index}});
+        }
+    }
+   
+}
+
+export function savedResume(savedResume) {
+    return {type:"SAVED-RESUME",payload:savedResume}
 };

@@ -2,47 +2,75 @@ import React, { Component } from "react";
 import {Link , Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { jobIndex , applyJob} from "./redux/actions";
+import { appliedJob  } from "./redux/actions";
+import axios from 'axios';
 
 import Moment from 'react-moment';
 import 'moment-timezone';
 
-class Jobs extends Component {
-constructor(props){
-super(props);
-this.state = {
-  redirect : false
-}
-}
-
-  handleClick =  (jobIndex) => {
-    console.log(jobIndex);
-   this.props.jobIndex(jobIndex);
-   this.setState({redirect:true});
+class MyAppliedJobs extends Component {
+  constructor(props){
+  super(props);
+  this.state = {
+    appliedJobs : [],
+    status:'',
+    redirect:false
+  }
   }
 
-  handleApplyClick = (jobId , index) => {
-   this.props.applyJob(jobId,this.props._id,this.props.auth_token , index);
+  componentDidMount = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props._id}`, 
+      {
+          headers: {
+              'auth_token': this.props.auth_token,
+          }
+      });
+      if(response.data.length){
+        response.data.map( async (job)=> {
+          // 
+            const response = await axios.get(`http://localhost:3001/api/jobs?jobId=${job.job_id}`,
+            {
+                headers: {
+                    'auth_token': this.props.auth_token,
+                }
+            });
+            let obj = response.data;
+                obj.status = job.status;
+                obj.applied_date = job.date;
+                this.setState({appliedJobs:[...this.state.appliedJobs,obj]});
+          // 
+        })
+      }
+      this.setState({status:'done'});
+    } catch (error) {
+      
+    }
+
+  }
+
+  handleClick =  (jobIndex) => {
+   this.props.appliedJob(this.state.appliedJobs[jobIndex]);
+   this.setState({redirect:true});
   }
 
   render() {
     return (
       <div className='container'>
-        {this.state.redirect ?  <Redirect push  to="/job-details" /> : null }
+        {this.state.redirect ?  <Redirect push  to="/my-applied-job" /> : null }
         <div className='row'>
         <div className='col-3'></div>
         <div className='col-6 mb-5'>
-          {!this.props.jobs.length ?
-          <div  className="card text-center mt-5 shadow-lg p-1  rounded-pill border border-danger " >
+          { (this.state.status === 'done' && this.state.appliedJobs.length === '0' ) ?
+          <div  className="card text-center mt-5 shadow-lg p-1  rounded-pill border border-danger" >
             <div className="card-body">
-              <h4 className="card-title">We could not find jobs matching your search criteria.</h4>
-              <p className="card-text m-1">Did you enter wrong spelling of any word?</p>
-              <Link to="/" class="btn btn-secondary mt-2">Try Again</Link>
+              <h4 className="card-title">SORRY</h4>
+              <p className="card-text m-1">You did not applied any job.</p>
+              <Link to="/" className="btn btn-secondary mt-2">Let's find a job</Link>
             </div>
-            
           </div>
           : 
-          this.props.jobs.map((job,index)=>{   
+          this.state.appliedJobs.map((job,index)=>{   
           return <div key={index} className="card text-center mt-5 shadow p-1  rounded border border-dark" >
               <div className="card-body btn" onClick={()=>{this.handleClick(index)}}>
                 <h4 className="card-title m-0 p-0 text-capitalize" >{job.jobtitle}</h4>
@@ -75,14 +103,18 @@ this.state = {
               <div className="card-footer  p-1">
                 <span className='float-left ml-5 text-muted' >
                    <span className="glyphicon glyphicon-time"></span>
-                   <span className="ml-1"> <Moment fromNow>{job.date}</Moment> </span>
+                   <span className="font-weight-bold">Applied Date :</span>
+                   <span className="ml-1"><Moment format="YYYY/MM/DD">{job.applied_date}</Moment></span>
+                   <span className="">( <Moment fromNow>{job.applied_date}</Moment> )</span>
                 </span>
-                { job.status ? job.status === 'APPLIED SUCCESSFULLY' ?
-                <span className='float-right mr-5 text-success font-weight-bold'> APPLIED SUCCESSFULLY </span>
+                <span className='float-right mr-5 text-muted'>
+                <span className="font-weight-bold">Status : </span>
+                {job.status === 'pending' ?
+                <span className='text-warning font-weight-bold badge bg-dark'> Pending </span>
                 : 
-                <span className='float-right mr-5 text-warning font-weight-bold '> ALREADY-APPLIED </span> : 
-                <span className='float-right mr-5 text-info font-weight-bold btn ' onClick={()=>{this.handleApplyClick(job._id , index)}}> APPLY NOW </span>
+                <span className='text-danger font-weight-bold '> other </span>
                 }
+                </span>
               </div>
             </div>
           }
@@ -102,10 +134,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      jobIndex,
-      applyJob
+      appliedJob 
     },
     dispatch
   );
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Jobs);
+export default connect(mapStateToProps, mapDispatchToProps)(MyAppliedJobs);
