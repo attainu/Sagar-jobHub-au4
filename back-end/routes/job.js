@@ -1,5 +1,6 @@
 var router = require('express').Router();
 const Job = require('../models/jobModel');
+const Resume = require('../models/resumeModel');
 
 const { jobValidation } = require("../validators/bodyValidator");
 
@@ -40,12 +41,17 @@ router.post('/', varify , varifyRecruiter , jobValidation, async (req, res, next
 router.get('/', varify , async (req, res, next) => {
   const { jobTitle , location , company_name , role , jobId , recruiter_Id} = req.query;
   
-  const checkSkills = (skills,jobTitle) => {
-    skills.map((skill) => {
-      console.log(skill,jobTitle)
-      if(skill === jobTitle)
+  function checkSkills(skills,jobTitle){
+    // skills.map((skill) => {
+    //   console.log(skill,jobTitle)
+    //   if(skill === jobTitle)
+    //   return true;
+    // })
+    // return false;
+    for (const key in skills) {
+      if(skills[key] === jobTitle)
       return true;
-    })
+    }
     return false;
   }
 
@@ -126,4 +132,35 @@ router.get('/', varify , async (req, res, next) => {
 
 });
 
+//GET my-jobs
+router.get('/my-jobs',varify, async (req,res,next)=>{
+  const user_id = req.user._id;
+try{
+  let jobArray = [];
+  const resume = await Resume.findOne({user_id:user_id});
+  const user_skills = resume.skills;
+  const jobs = await Job.find();
+
+  let skip = false;
+  jobs.map((job) => {
+    skip = false;
+    job.skills.map((job_skill) => {
+      if(!skip){
+        user_skills.map((user_skill)=>{
+          if(!skip){
+            if(user_skill.toLowerCase() === job_skill.toLowerCase()){
+            jobArray.push(job)
+            skip = true;
+            }
+          }
+        })
+      }
+    })
+  })
+
+  res.status(200).send(jobArray);
+}catch(error){
+  res.status(500).send(error);
+}
+})
 module.exports = router;

@@ -140,6 +140,24 @@ class JobSeeker extends Component {
   }
   }
 
+  //  API call for my-jobs
+  myJobs = async () => {
+    try {
+        const response = await axios.get(`http://localhost:3001/api/jobs/my-jobs`,
+        {
+            headers: {
+                'auth_token': this.props.auth_token,
+            }
+        });
+        console.log(response.data)
+        this.props.jobSearchResult(response.data);
+        this.setState({redirect:true})
+          
+    } catch (error) {
+        console.log("there is an error", error);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -161,6 +179,11 @@ class JobSeeker extends Component {
                   Home
                 </Link>
               </li>
+              <li className="nav-item ml-5">
+                <Link onClick={()=>{this.myJobs()}} className=" nav-link">
+                  My Jobs
+                </Link>
+              </li>
               {!this.props.isResumeCreated ? <li className="nav-item ml-5">
                 <Link to="/create-resume" className="nav-link">
                   Create-Resume
@@ -180,10 +203,10 @@ class JobSeeker extends Component {
 
             <ul className="nav navbar-nav navbar-right ml-auto">
               <li className="nav-item mr-5">
-                <a href="/" className="nav-link notifications">
+                <Link to="/" className="nav-link notifications">
                   <i className="fa fa-bell-o"></i>
                   <span className="badge">1</span>
-                </a>
+                </Link>
               </li>
               {/* <li className="nav-item">
                 <a href="/" className="nav-link messages">
