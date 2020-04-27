@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {Redirect, Link} from 'react-router-dom';
 import {bindActionCreators} from "redux";
 import {signedUp} from "./redux/actions";
 import axios from "axios";
@@ -27,7 +28,9 @@ class PostJob extends Component {
             skills: [],
             //alert
             alert: false,
-            alertMessage: "minimum one skill is required"
+            alertMessage: "minimum one skill is required",
+            //redirecting
+            redirect:''
         };
     }
 
@@ -179,7 +182,7 @@ class PostJob extends Component {
                 skills: [
                     this.state.skill, ...this.state.skills
                 ]
-            })
+            },()=>{this.setState({skill : '' })})
     }
 
     handleSubmit = (e) => {
@@ -225,13 +228,18 @@ class PostJob extends Component {
             }
             );
             console.log(response)
-            // this.props.history.push("/");
+            alert('Job Posted Successfully')
+            this.setState({redirect:'/'})
+            
         } catch (error) {
-            console.log("there is an error", error.response);
+            alert('SORRY , Unable to Post.')
         }
     };
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
         return (
             <div className="container pl-5 pr-5 pb-5 pt-5 ">
                 <div className="pl-5 pr-5 pb-5  border border-info shadow-lg rounded">
@@ -252,7 +260,7 @@ class PostJob extends Component {
                                         className="form-control "
                                         placeholder="ex.Mumbai, Pune, Banglore"
                                         required={true}
-                                        aria-required="true"
+                                        autoComplete='off'
                                         onChange={(e) => {
                                         this.handleChange(e)
                                     }}/>
@@ -265,11 +273,11 @@ class PostJob extends Component {
                                         type="text"
                                         name="company_name"
                                         id="company_name"
-                                        className="form-control companyinput valid"
+                                        className="form-control "
+                                        autoComplete='off'
                                         placeholder="ex Google , Microsoft , Ola"
                                         required={true}
                                         maxLength="255"
-                                        aria-required="true"
                                         onChange={(e) => {
                                         this.handleChange(e)
                                     }}/>
@@ -282,7 +290,6 @@ class PostJob extends Component {
                                         id="totalemployees"
                                         name="total_employee"
                                         required={true}
-                                        aria-required="true"
                                         aria-invalid="true"
                                         onChange={(e) => {
                                         this.handleChange(e)
@@ -305,9 +312,10 @@ class PostJob extends Component {
                                         id="yourname"
                                         aria-describedby="emailHelp"
                                         placeholder=""
+                                        autoComplete='off'
                                         required={true}
                                         maxLength="255"
-                                        aria-required="true"
+                                        
                                         onChange={(e) => {
                                         this.handleChange(e)
                                     }}/>
@@ -321,6 +329,7 @@ class PostJob extends Component {
                                         id="phone_number"
                                         maxLength="10"
                                         required={true}
+                                        autoComplete='off'
                                         onChange={(e) => {
                                         this.handleChange(e)
                                     }}/>
@@ -348,7 +357,7 @@ class PostJob extends Component {
                                         id="jobtitle"
                                         maxLength="255"
                                         autoComplete="off"
-                                        aria-required="true"
+                                       
                                         required={true}
                                         onChange={(e) => {
                                         this.handleChange(e)
@@ -368,7 +377,7 @@ class PostJob extends Component {
                                         width: "100%"
                                     }}
                                         name="role"
-                                        aria-required="true"
+                                        
                                         tabIndex="-1"
                                         aria-hidden="true"
                                         required={true}
@@ -805,7 +814,7 @@ class PostJob extends Component {
                                                 id="minimum_experience"
                                                 name="min_experience"
                                                 required={true}
-                                                aria-required="true"
+                                                
                                                 onChange={(e) => {
                                                 this.handleChange(e)
                                             }}>
@@ -835,7 +844,7 @@ class PostJob extends Component {
                                                 className="form-control"
                                                 id="maximum_experience"
                                                 name="max_experience"
-                                                aria-required="true"
+                                                
                                                 required={true}
                                                 onChange={(e) => {
                                                 this.handleChange(e)
@@ -981,11 +990,13 @@ class PostJob extends Component {
                                     type="text"
                                     onChange={(e) => {
                                     this.handleChange(e)
-                                }}
-                                    required={true}
+                                    }}
+                                    
                                     name="skill"
                                     className="form-control"
-                                    placeholder="Type your Skill then press +ADD SKILL"/>
+                                    placeholder="Type your Skill then press +ADD SKILL"
+                                    value={this.state.skill}
+                                    />
                             </div>
                             <div className="col-2">
                                 <button
@@ -1015,7 +1026,7 @@ class PostJob extends Component {
                                             style={{
                                             wordWrap: "break-word"
                                         }}
-                                            className="m-2 p-1 border border-success rounded-pill ">{skill}</span>
+                                            className="m-2 p-1 pl-2 pr-2 border border-warning rounded-pill ">{skill}</span>
                                     })}
                             </div>
                         </div>
@@ -1024,8 +1035,8 @@ class PostJob extends Component {
                             <div className="col">
                                 <div className="form-group">
                                     <label htmlFor="exampleFormControlTextarea1">Job Description *</label>
-                                    <small className="text-muted">Describe the responsibilities of this job,
-                                        required work experience, skills, or education.</small>
+                                    <small className="text-muted">Describe the responsibilities of this job.</small>
+                                    {/* ,required work experience, skills, or education */}
                                     <textarea
                                         className="form-control"
                                         name="description"
@@ -1040,11 +1051,20 @@ class PostJob extends Component {
                         </div>
                         {/*  */}
                         <div className="row">
-                            <div className="col-8"></div>
-                            <div className="col-4 pl-5 ">
-                                <button type="submit" className="btn btn-success btn-block btn">
-                                    Save
+                            <div className="col-6"></div>
+                            <div className="col-3">
+                                <Link to='/'>
+                                <button  className="btn btn-danger btn-block btn">
+                                    Cancel
                                 </button>
+                                </Link>
+                            </div>
+                            <div className="col-3">
+                                
+                                <button type="submit" className="btn btn-success btn-block btn">
+                                    Post
+                                </button>
+                                
                             </div>
                         </div>
                         {/*  */}

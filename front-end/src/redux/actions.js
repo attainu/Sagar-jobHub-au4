@@ -104,3 +104,7 @@ export function saveResume(resume_id,saver_id,auth_token , index) {
 export function savedResume(savedResume) {
     return {type:"SAVED-RESUME",payload:savedResume}
 };
+
+export function logOut(){
+    return {type:'LOGOUT'}
+}

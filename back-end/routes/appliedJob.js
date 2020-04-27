@@ -50,4 +50,14 @@ router.get('/:_id', varify, async (req, res, next) => {
   } 
 });
 
+router.put('/:id/:status',async  (req,res,next) => {
+  const {id,status} = req.params;
+  try {
+    const updated = await AppliedJob.findByIdAndUpdate(id,{status:status});
+    res.status(200).send('updated') 
+  } catch (error) {
+    res.status(500).send(error);
+  }
+})
+
 module.exports = router;

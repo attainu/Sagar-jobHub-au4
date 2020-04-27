@@ -17,6 +17,7 @@ import Resumes from './Resumes';
 import Resume from './Resume';
 import MySavedResumes from './MySavedResumes';
 import MySavedResume from './MySavedResume';
+import MyPostedJobs from  './MyPostedJobs';
 
 class Main extends Component {
 
@@ -61,8 +62,11 @@ class Main extends Component {
           <Route  path="/my-saved-resume">
             {this.props.isLoggedIn && this.props.role === "recruiter"  ? <MySavedResume/> : <Redirect to='/' push={true} /> }
           </Route>
+          <Route  path="/my-posted-jobs">
+            {this.props.isLoggedIn && this.props.role === "recruiter"  ? <MyPostedJobs/> : <Redirect to='/' push={true} /> }
+          </Route>
         </Switch>
-        {/* <Resumes/> */}
+        {/* <MyPostedJobs/> */}
       </main>
     );
   }

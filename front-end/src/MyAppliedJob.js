@@ -49,9 +49,12 @@ class MyAppliedJob extends Component {
                 <span className='float-right mr-5 text-muted'>
                 <span className="font-weight-bold">Status : </span>
                 {this.props.appliedJob.status === 'pending' ?
-                <span className='text-warning font-weight-bold badge bg-dark'> Pending </span>
+                <span className='text-warning font-weight-bold badge bg-white border border-warning'> Pending </span>
                 : 
-                <span className='text-danger font-weight-bold '> other </span>
+                this.props.appliedJob.status === 'accepted' ?
+                <span className='text-success font-weight-bold badge bg-white border border-success'> Accepted </span>
+                :
+                <span className='text-danger font-weight-bold badge bg-white border border-danger'> Rejected </span>
                 }
                 </span>
               </div>

@@ -3,7 +3,7 @@ import {Link, Redirect} from 'react-router-dom';
 import "./JobSeeker.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { resumeNotCreated , jobSearchResult } from "./redux/actions";
+import { resumeNotCreated , jobSearchResult , logOut } from "./redux/actions";
 import axios from "axios";
 
 class JobSeeker extends Component {
@@ -198,23 +198,23 @@ class JobSeeker extends Component {
                   className="nav-link dropdown-toggle user-action"
                 >
                   <img
-                    src="https://www.tutorialrepublic.com/examples/images/avatar/2.jpg"
+                    src={process.env.PUBLIC_URL + '/profile.jpg'}
                     className="avatar"
                     alt="Avatar"
                   />
                   Paula Wilson
                 </a>
                 <ul className="dropdown-menu">
-                  <li>
+                  {/* <li>
                     <a href="/" className="dropdown-item">
                       <i className="fa fa-user-o"></i> Profile
                     </a>
                   </li>
-                  <li className="divider dropdown-divider"></li>
+                  <li className="divider dropdown-divider"></li> */}
                   <li>
-                    <a href="/" className="dropdown-item">
+                    <button  className="dropdown-item" onClick={()=>{this.props.logOut()}}>
                       <i className="material-icons">&#xE8AC;</i> Logout
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </li>
@@ -231,7 +231,7 @@ class JobSeeker extends Component {
                   type="text"
                   name="jobTitle"
                   className="form-control"
-                  placeholder="Job Title"
+                  placeholder="Job Title ,Skill , Keyword , Company"
                   onChange={(e)=>{this.handleChange(e)}}
                 />
               </div>
@@ -303,7 +303,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       resumeNotCreated,
-      jobSearchResult
+      jobSearchResult,
+      logOut
     },
     dispatch
   );

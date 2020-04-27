@@ -3,7 +3,7 @@ import "./Recruiter.css";
 import { Link , Redirect} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {resumeSearchResult} from "./redux/actions";
+import {resumeSearchResult , logOut} from "./redux/actions";
 import axios from 'axios';
 
 class Recruiter extends Component {
@@ -12,7 +12,13 @@ class Recruiter extends Component {
     this.state = {
       resumeTitle: "",
       location: "",
-      redirect:false
+      redirect:false,
+      TotalNumberOfPostedJobs:0,
+      TotalNumberOfAppliers:0,
+      TotalNumberOfAcceptedResumes:0,
+      TotalNumberOfRejectedResumes:0,
+      TotalNumberOfPendingResumes:0,
+      
     }
   }
 
@@ -61,6 +67,51 @@ class Recruiter extends Component {
     }
     
   };
+  
+  componentDidMount = async () => {
+    // Total Number of Posted Jobs
+    try {
+      const response = await axios.get(`http://localhost:3001/api/jobs?recruiter_Id=${this.props._id}`, 
+      {
+          headers: {
+              'auth_token': this.props.auth_token,
+          }
+      });
+      
+      if(response.data.length) {
+        this.setState({TotalNumberOfPostedJobs:response.data.length});
+        
+        //Total Number of Appliers 
+        response.data.map( async (job)=> {
+          const response = await axios.get(`http://localhost:3001/api/applied-jobs/${job._id}`,
+            {
+                headers: {
+                    'auth_token': this.props.auth_token,
+                }
+            });
+            if(response.data.length) {
+              let count = response.data.length;
+              this.setState({ TotalNumberOfAppliers:this.state.TotalNumberOfAppliers + count });
+              
+              //Total number of Accepted/Rejected/Pending Resumes
+              response.data.map((applier)=>{
+                if(applier.status === "accepted")
+                this.setState({ TotalNumberOfAcceptedResumes:this.state.TotalNumberOfAcceptedResumes + 1 });
+                else if(applier.status === "rejected")
+                this.setState({ TotalNumberOfRejectedResumes:this.state.TotalNumberOfRejectedResumes + 1 });
+                else
+                this.setState({ TotalNumberOfPendingResumes:this.state.TotalNumberOfPendingResumes + 1 });
+              })
+            }
+          })
+        // 
+      }
+    } catch(error) { 
+      console.log("NOT Fetched Total Number of Posted Jobs.")
+    }
+
+    
+  }
 
   render() {
     return (
@@ -89,6 +140,11 @@ class Recruiter extends Component {
                 </Link>
               </li>
               <li className="nav-item ml-5">
+                <Link to="/my-posted-jobs" className="nav-link">
+                  My Posted Jobs
+                </Link>
+              </li>
+              <li className="nav-item ml-5">
                 <Link to="/my-saved-resumes" className="nav-link">
                   Saved Resumes
                 </Link>
@@ -96,12 +152,12 @@ class Recruiter extends Component {
             </ul>
 
             <ul className="nav navbar-nav navbar-right ml-auto">
-              <li className="nav-item mr-5">
+              {/* <li className="nav-item mr-5">
                 <a href="/" className="nav-link notifications">
                   <i className="fa fa-bell-o"></i>
                   <span className="badge">1</span>
                 </a>
-              </li>
+              </li> */}
               {/* <li className="nav-item">
                 <a href="/" className="nav-link messages">
                   <i className="fa fa-envelope-o"></i>
@@ -115,23 +171,23 @@ class Recruiter extends Component {
                   className="nav-link dropdown-toggle user-action"
                 >
                   <img
-                    src="https://www.tutorialrepublic.com/examples/images/avatar/2.jpg"
+                    src={process.env.PUBLIC_URL + '/profile.jpg'}
                     className="avatar"
                     alt="Avatar"
                   />
                   Paula Wilson
                 </a>
                 <ul className="dropdown-menu">
-                  <li>
+                  {/* <li>
                     <a href="/" className="dropdown-item">
                       <i className="fa fa-user-o"></i> Profile
                     </a>
                   </li>
-                  <li className="divider dropdown-divider"></li>
+                  <li className="divider dropdown-divider"></li> */}
                   <li>
-                    <a href="/" className="dropdown-item">
+                    <button  className="dropdown-item" onClick={()=>{this.props.logOut()}}>
                       <i className="material-icons">&#xE8AC;</i> Logout
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </li>
@@ -173,7 +229,7 @@ class Recruiter extends Component {
           <Link to='/post-job'>
           <button
             type="button"
-            className="btn btn-outline-warning border border-warning ml-4"
+            className="border border-dark text-dark bg-warning ml-4 p-1"
           >
             Post a Job
           </button>
@@ -182,52 +238,54 @@ class Recruiter extends Component {
         <br/>
         <div className='row mt-5 ml-5 mr-5'>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
-            <div className="card-header font-weight-bolder">Total Number of Posted Jobs</div>
-            <div className="card-body">
-              <h1 className="card-title font-weight-bolder">9</h1>
-            </div>
-            </div>
+            <Link to="/my-posted-jobs" className="" style={{ textDecoration: 'none' }}>
+              <div className="card bg-light mb-3 text-center shadow-lg border-info" style={{borderWidth:'2px'}}>
+              <div className="card-header font-weight-bolder">Total Number of Posted Jobs</div>
+              <div className="card-body">
+              <h1 className="card-title font-weight-bolder">{this.state.TotalNumberOfPostedJobs}</h1>
+              </div>
+              </div>
+            </Link>
           </div>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
+            <div className="card bg-light mb-3 text-center shadow-lg border-warning" style={{borderWidth:'2px'}}>
             <div className="card-header font-weight-bolder">Total Number of Appliers</div>
             <div className="card-body">
-              <h1 className="card-title font-weight-bolder">1029</h1>
+            <h1 className="card-title font-weight-bolder">{this.state.TotalNumberOfAppliers}</h1>
             </div>
             </div>
           </div>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
+            <div className="card bg-light mb-3 text-center shadow-lg border-success" style={{borderWidth:'2px'}}>
             <div className="card-header font-weight-bolder">Total number of Accepted Resumes</div>
             <div className="card-body">
-              <h1 className="card-title font-weight-bolder">7</h1>
+              <h1 className="card-title font-weight-bolder">{this.state.TotalNumberOfAcceptedResumes}</h1>
             </div>
             </div>
           </div>
         </div>
         <div className='row  ml-5 mr-5'>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
+            <div className="card bg-light mb-3 text-center shadow-lg border-danger" style={{borderWidth:'2px'}}>
             <div className="card-header font-weight-bolder">Total number of Rejected Resumes</div>
             <div className="card-body">
-              <h1 className="card-title font-weight-bolder">9</h1>
+            <h1 className="card-title font-weight-bolder">{this.state.TotalNumberOfRejectedResumes}</h1>
             </div>
             </div>
           </div>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
-            <div className="card-header font-weight-bolder">Total Number of Posted Jobs</div>
+            <div className="card bg-light mb-3 text-center shadow-lg border-dark" style={{borderWidth:'2px'}}>
+            <div className="card-header font-weight-bolder">Total Number of Pending Resumes</div>
             <div className="card-body">
-              <h1 className="card-title font-weight-bolder">1029</h1>
+              <h1 className="card-title font-weight-bolder">{this.state.TotalNumberOfPendingResumes}</h1>
             </div>
             </div>
           </div>
           <div className='col-4 p-5'>
-            <div className="card bg-light mb-3 text-center shadow-lg" >
+            <div className="card bg-light mb-3 text-center shadow-lg border-secondary" >
             <div className="card-header font-weight-bolder">Total number of ....</div>
             <div className="card-body">
-              <h1 className="card-title font-weight-bolder">7</h1>
+              <h1 className="card-title font-weight-bolder">...</h1>
             </div>
             </div>
           </div>
@@ -243,7 +301,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      resumeSearchResult  
+      resumeSearchResult,
+      logOut  
     },
     dispatch
   );

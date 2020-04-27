@@ -37,7 +37,7 @@ this.state = {
             <div className="card-body">
               <h4 className="card-title">We could not find jobs matching your search criteria.</h4>
               <p className="card-text m-1">Did you enter wrong spelling of any word?</p>
-              <Link to="/" class="btn btn-secondary mt-2">Try Again</Link>
+              <Link to="/" className="btn btn-secondary mt-2">Try Again</Link>
             </div>
             
           </div>

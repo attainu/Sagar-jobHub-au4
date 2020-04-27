@@ -38,7 +38,16 @@ router.post('/', varify , varifyRecruiter , jobValidation, async (req, res, next
 
 /* GET get jobs  */
 router.get('/', varify , async (req, res, next) => {
-  const { jobTitle , location , company_name , role , jobId} = req.query;
+  const { jobTitle , location , company_name , role , jobId , recruiter_Id} = req.query;
+  
+  const checkSkills = (skills,jobTitle) => {
+    skills.map((skill) => {
+      console.log(skill,jobTitle)
+      if(skill === jobTitle)
+      return true;
+    })
+    return false;
+  }
 
   if(!jobTitle && location){
     try {
@@ -54,7 +63,7 @@ router.get('/', varify , async (req, res, next) => {
       let jobArray = [];
       const jobs = await Job.find();
       jobs.map((job,index)=>{
-      if(job.jobtitle.toLowerCase().includes(jobTitle.toLowerCase())) {
+      if(job.jobtitle.toLowerCase().includes(jobTitle.toLowerCase()) || job.company_name.toLowerCase().includes(jobTitle.toLowerCase()) || job.description.toLowerCase().includes(jobTitle.toLowerCase()) || checkSkills(job.skills,jobTitle)) {
         jobArray.push(job)
       }
       })
@@ -69,7 +78,7 @@ router.get('/', varify , async (req, res, next) => {
       let jobArray = [];
       const jobs = await Job.find();
       jobs.map((job,index)=>{
-      if(job.jobtitle.toLowerCase().includes(jobTitle.toLowerCase()) && job.location.toLowerCase().includes(location.toLowerCase())) {
+      if(job.jobtitle.toLowerCase().includes(jobTitle.toLowerCase()) || job.company_name.toLowerCase().includes(jobTitle.toLowerCase()) && job.location.toLowerCase().includes(location.toLowerCase())) {
         jobArray.push(job)
       }
       })
@@ -100,6 +109,14 @@ router.get('/', varify , async (req, res, next) => {
     try {
       const job = await Job.findById(jobId);
       res.status(200).send(job);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  else if(recruiter_Id){
+    try {
+      const jobs = await Job.find({ user_id : recruiter_Id });
+      res.status(200).send(jobs);
     } catch (error) {
       console.log(error);
     }

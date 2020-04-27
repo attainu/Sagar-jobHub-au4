@@ -90,11 +90,11 @@ class Resumes extends Component {
                    <span className="ml-1"> <Moment fromNow>{resume.date}</Moment> </span>
                 </span>
                 { resume.status ? resume.status === 'ADDED SUCCESSFULLY' ?
-                <span className='float-right mr-5 text-success font-weight-bold'> ADDED SUCCESSFULLY </span>
+                <span className='float-right mr-5 text-success font-weight-bold'> SAVED SUCCESSFULLY </span>
                 : 
-                <span className='float-right mr-5 text-warning font-weight-bold '> ALREADY ADDED </span>
+                <span className='float-right mr-5 text-warning font-weight-bold '> ALREADY SAVED </span>
                 : 
-                <span className='float-right mr-5 text-info font-weight-bold btn ' onClick={()=>{this.handleAddClick(resume._id , index)}} > +ADD </span>
+                <span className='float-right mr-5 text-info font-weight-bold btn ' onClick={()=>{this.handleAddClick(resume._id , index)}} > SAVE </span>
                 }
               </div>
             </div>

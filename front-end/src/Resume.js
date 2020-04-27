@@ -40,7 +40,7 @@ class Resume extends Component {
                   <span className="ml-4">
                     <i className="fa fa-inr"></i>
                     <span className="font-weight-bold"> Current Salary :</span>
-                    <span className="ml-2">{this.props.resume.current_salary}</span>
+                    <span className="ml-2">{this.props.resume.show_salary ? this.props.resume.current_salary:'*******'}</span>
                   </span>
                 </p>
                 <p>
@@ -73,10 +73,10 @@ class Resume extends Component {
                    <span className="ml-1"> <Moment fromNow>{this.props.resume.date}</Moment> </span>
                 </span>
                 { this.props.resume.status ? this.props.resume.status === 'ADDED SUCCESSFULLY' ?
-                <span className='float-right mr-5 text-success font-weight-bold'> ADDED SUCCESSFULLY </span>
+                <span className='float-right mr-5 text-success font-weight-bold'> SAVED SUCCESSFULLY </span>
                 : 
-                <span className='float-right mr-5 text-warning font-weight-bold '> ALREADY ADDED </span> : 
-                <span className='float-right mr-5 text-info font-weight-bold btn ' onClick={()=>{this.handleAddClick(this.props.resume._id , this.props.resume.index)}}> +ADD </span>
+                <span className='float-right mr-5 text-warning font-weight-bold '> ALREADY SAVED </span> : 
+                <span className='float-right mr-5 text-info font-weight-bold btn ' onClick={()=>{this.handleAddClick(this.props.resume._id , this.props.resume.index)}}> SAVE </span>
                 }
               </div>
             </div>
@@ -107,7 +107,7 @@ class Resume extends Component {
               <p>
                 {" "}
                 <span className="text-muted">Current Salary : </span>{" "}
-                {this.props.resume.current_salary}
+                {this.props.resume.show_salary ? this.props.resume.current_salary:'*******'}
               </p>
             </div>
 
@@ -121,7 +121,7 @@ class Resume extends Component {
               <p>
                 {" "}
                 <span className="text-muted">Mobile : </span>{" "}
-                {this.props.resume.phone_number}
+                {this.props.resume.show_phone ? this.props.resume.phone_number:'*******'}
               </p>
             </div>
 

@@ -19,96 +19,7 @@ const initialState = {
     date: "",
     isResumeCreated:true,
     // jobs
-    jobs:[ {
-        "skills": [
-            "asdg"
-        ],
-        "date": "2020-04-11T21:31:35.577Z",
-        "_id": "5e9237427500b83498b56291",
-        "location": "pune",
-        "company_name": "company_name",
-        "total_employee": "total_employee",
-        "your_name": "your_name",
-        "phone_number": "phone_number",
-        "jobtitle": "jobtitle",
-        "role": "role",
-        "job_type": "job_type",
-        "min_experience": 0,
-        "max_experience": 100,
-        "min_salary": "min_salary",
-        "max_salary": "max_salary",
-        "maximum_hires": "maximum_hires",
-        "description": "description",
-        "__v": 0
-    },
-    {
-        "skills": [
-            "asdg"
-        ],
-        "date": "2020-04-11T21:49:20.889Z",
-        "_id": "5e923b71fc2ed81f64276263",
-        "user_id": "am a user id 23223h2ggjhgjhgj32",
-        "location": "pune",
-        "company_name": "company_name",
-        "total_employee": "total_employee",
-        "your_name": "your_name",
-        "phone_number": "phone_number",
-        "jobtitle": "JOBTITLEEEEE",
-        "role": "role",
-        "job_type": "job_type",
-        "min_experience": 0,
-        "max_experience": 100,
-        "min_salary": "min_salary",
-        "max_salary": "max_salary",
-        "maximum_hires": "maximum_hires",
-        "description": "description",
-        "__v": 0
-    },
-    {
-        "skills": [
-            "asdg"
-        ],
-        "date": "2020-04-11T21:31:35.577Z",
-        "_id": "5e9237427500b83498b56291",
-        "location": "pune",
-        "company_name": "company_name",
-        "total_employee": "total_employee",
-        "your_name": "your_name",
-        "phone_number": "phone_number",
-        "jobtitle": "jobtitle",
-        "role": "role",
-        "job_type": "job_type",
-        "min_experience": 0,
-        "max_experience": 100,
-        "min_salary": "min_salary",
-        "max_salary": "max_salary",
-        "maximum_hires": "maximum_hires",
-        "description": "description",
-        "__v": 0
-    },
-    {
-        "skills": [
-            "asdg"
-        ],
-        "date": "2020-04-11T21:49:20.889Z",
-        "_id": "5e923b71fc2ed81f64276263",
-        "user_id": "am a user id 23223h2ggjhgjhgj32",
-        "location": "pune",
-        "company_name": "company_name",
-        "total_employee": "total_employee",
-        "your_name": "your_name",
-        "phone_number": "phone_number",
-        "jobtitle": "JOBTITLEEEEE",
-        "role": "role",
-        "job_type": "job_type",
-        "min_experience": 0,
-        "max_experience": 100,
-        "min_salary": "min_salary",
-        "max_salary": "max_salary",
-        "maximum_hires": "maximum_hires",
-        "description": "description",
-        "__v": 0
-    }],
+    jobs:[],
     job:null,
     appliedJob:null,
    
@@ -199,6 +110,11 @@ const reducer = (state = initialState, action) => {
         }
         case 'SAVED-RESUME': { 
             copyOfState.resume = action.payload;
+            return copyOfState;
+        }
+        case 'LOGOUT': {
+     
+        copyOfState.isLoggedIn = false;
             return copyOfState;
         }
         default:
