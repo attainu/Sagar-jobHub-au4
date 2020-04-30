@@ -25,8 +25,8 @@ const initialState = {
    
     // search data
     region:['Pune','Hyderabad','Bengaluru','Rajkot','Kolkata','Mumbai','Jaipur','Lucknow','Surat','Kanpur','Ahmedabad','Chennai','Delhi','Chandigarh','Gurgaon','Noida'],
-    companies:['company_name','Flipkart','Amazon','Oyo','One97','Uber','Swiggy','DHL','Tata','Zomato','Alphabet','Reliance','Bajaj','Paytm','Adobe'],
-    category : ['Role','Recruitment Consultant','Interior Designer','Cashier','Application Developer','Devops Engineer','Php Developer','Java Script Developer','Senior Java Developer','Senior Web Designer','UI/UX Designer','Unix Engineer','Web Application Developer','Web Designer - Trainee','IT Software Fresher','Networking Manager','Webmaster','Computer Operator','Amazon','Banking','AngularJS Developer','Photoshop','Corel Draw','After Effects','Core PHP','Jquery Expert','Digital Marketing','Content Writing','Blog Posting','Social Media Marketing','Bootstrap','Manual Testing','Operations Manager','Java Full Stack Developer','Javascript','Nodejs','Programmers','Game Developer','Graphic Designer','Automation Fresher','Internship','Trainee'],
+    companies:['Flipkart','Amazon','Oyo','One97','Uber','Swiggy','DHL','Tata','Zomato','Alphabet','Reliance','Bajaj','Paytm','Adobe'],
+    category : ['Recruitment Consultant','Interior Designer','Cashier','Application Developer','Devops Engineer','Php Developer','Java Script Developer','Senior Java Developer','Senior Web Designer','UI/UX Designer','Unix Engineer','Web Application Developer','Web Designer - Trainee','IT Software Fresher','Networking Manager','Webmaster','Computer Operator','Amazon','Banking','AngularJS Developer','Photoshop','Corel Draw','After Effects','Core PHP','Jquery Expert','Digital Marketing','Content Writing','Blog Posting','Social Media Marketing','Bootstrap','Manual Testing','Operations Manager','Java Full Stack Developer','Javascript','Nodejs','Programmers','Game Developer','Graphic Designer','Automation Fresher','Internship','Trainee'],
     resumes:[],
     resume:null
 }
@@ -113,8 +113,23 @@ const reducer = (state = initialState, action) => {
             return copyOfState;
         }
         case 'LOGOUT': {
-     
-        copyOfState.isLoggedIn = false;
+            copyOfState.isLoggedIn = false;
+            copyOfState.alert = false;
+            copyOfState.auth_token = "";      
+            // User
+            copyOfState.name =  "";
+            copyOfState.email = "";
+            copyOfState.role =  "";
+            copyOfState._id = "";
+            copyOfState.date = "";
+            copyOfState.isResumeCreated = true;
+            // jobs
+            copyOfState.jobs = [];
+            copyOfState.job = null;
+            copyOfState.appliedJob = null;
+            // search data
+            copyOfState.resumes = [];
+            copyOfState.resume = null;
             return copyOfState;
         }
         default:

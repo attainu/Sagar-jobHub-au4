@@ -4,7 +4,6 @@ const AppliedJob = require('../models/appliedJobModel');
 const { appliedJobValidation } = require("../validators/bodyValidator");
 
 const varify = require('../varifyToken');
-const varifyRecruiter = require('../verifyRecruiter');
 const varifyJobseeker = require('../verifyJobseeker');
 
 /* POST Save a appliedJob  */
@@ -26,7 +25,7 @@ router.post('/', varify , varifyJobseeker , appliedJobValidation, async (req, re
     const savedAppliedJob = await appliedJob.save();
     res.status(200).send(savedAppliedJob._id);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -38,14 +37,14 @@ router.get('/:_id', varify, async (req, res, next) => {
       const appliers = await AppliedJob.find({ job_id : _id });
       res.status(200).send(appliers);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } else {
     try {
       const appliedJobs = await AppliedJob.find({ applier_id : _id });
       res.status(200).send(appliedJobs);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } 
 });

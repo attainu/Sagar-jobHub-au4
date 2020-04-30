@@ -98,6 +98,8 @@ class Resumes extends Component {
                 }
               </div>
             </div>
+            else 
+            return null;
           }
           )}
         </div>        

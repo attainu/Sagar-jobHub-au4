@@ -44,7 +44,6 @@ class SignIn extends Component {
     this.props.login(user);
   };
 
-
   render() {
     return (
       <div className='bg'>

@@ -12,6 +12,7 @@ class JobSeeker extends Component {
     this.state = {
       jobTitle: "",
       location: "",
+      resumePrivacy:'',
       redirect:false
     }
   }
@@ -24,23 +25,25 @@ class JobSeeker extends Component {
             'auth_token': this.props.auth_token
         }
     });
-    
+
       if(!response.data)
       this.props.resumeNotCreated();
-  } catch (error) {
-      console.log("there is an error", error.response);
-  }
+      
+      this.setState({resumePrivacy:response.data})
+    } catch (error) {
+      
+    }
   } 
 
   // handle input change
   handleChange = (e) => {
     switch (e.target.name) {
       case "jobTitle": {
-        this.setState({ jobTitle: e.target.value },()=>{console.log(this.state.jobTitle)});
+        this.setState({ jobTitle: e.target.value });
         break;
       }
       case "location": {
-        this.setState({ location: e.target.value },()=>{console.log(this.state.location)});
+        this.setState({ location: e.target.value });
         break;
       }
       default:
@@ -52,7 +55,7 @@ class JobSeeker extends Component {
     e.preventDefault();
 
     if (!this.state.jobTitle && !this.state.location) {
-        console.log("both fields can't be empty")
+        alert("both fields can't be empty")
         return;
     }
 
@@ -70,7 +73,7 @@ class JobSeeker extends Component {
                   'auth_token': this.props.auth_token,
               }
           });
-          console.log(response.data)
+          
           this.props.jobSearchResult(response.data);
           // this.props.history.push('/find-jobs')
           this.setState({redirect:true})
@@ -78,7 +81,7 @@ class JobSeeker extends Component {
          
           
       } catch (error) {
-          console.log("there is an error", error);
+          
       }
       
   };
@@ -91,14 +94,14 @@ class JobSeeker extends Component {
               'auth_token': this.props.auth_token,
           }
       });
-      console.log(response.data)
+      
       this.props.jobSearchResult(response.data);
       // this.props.history.push('/find-jobs')
       this.setState({redirect:true})
      
       
   } catch (error) {
-      console.log("there is an error", error);
+      
   }
   } 
 
@@ -110,14 +113,14 @@ class JobSeeker extends Component {
               'auth_token': this.props.auth_token,
           }
       });
-      console.log(response.data)
+      
       this.props.jobSearchResult(response.data);
       // this.props.history.push('/find-jobs')
       this.setState({redirect:true})
      
       
   } catch (error) {
-      console.log("there is an error", error);
+      
   }
   }
 
@@ -129,14 +132,14 @@ class JobSeeker extends Component {
               'auth_token': this.props.auth_token,
           }
       });
-      console.log(response.data)
+      
       this.props.jobSearchResult(response.data);
       // this.props.history.push('/find-jobs')
       this.setState({redirect:true})
      
       
   } catch (error) {
-      console.log("there is an error", error);
+     
   }
   }
 
@@ -149,12 +152,36 @@ class JobSeeker extends Component {
                 'auth_token': this.props.auth_token,
             }
         });
-        console.log(response.data)
+        
         this.props.jobSearchResult(response.data);
         this.setState({redirect:true})
           
     } catch (error) {
-        console.log("there is an error", error);
+        
+    }
+  }
+
+  resumePrivacyChange = async () => {
+    let privacy ;
+    if(this.state.resumePrivacy === 'private')
+    privacy = 'public';
+    else
+    privacy = 'private';
+    
+    try {
+      const response = await axios.put(`http://localhost:3001/api/resumes/resume-privacy`,{ privacy:privacy , user_id : this.props._id }
+      // {
+      //     headers: {
+      //       "Content-Type": "text/plain",
+      //        'auth_token': this.props.auth_token
+      //     }
+      // }
+      );
+      if(response.data.nModified)
+      this.setState({resumePrivacy:privacy})
+           
+    } catch (error) {
+      
     }
   }
 
@@ -179,10 +206,10 @@ class JobSeeker extends Component {
                   Home
                 </Link>
               </li>
-              <li className="nav-item ml-5">
-                <Link onClick={()=>{this.myJobs()}} className=" nav-link">
+              <li className="nav-item ml-5"> 
+                <span onClick={()=>{this.myJobs()}} className="pt-4 nav-link">
                   My Jobs
-                </Link>
+                </span>
               </li>
               {!this.props.isResumeCreated ? <li className="nav-item ml-5">
                 <Link to="/create-resume" className="nav-link">
@@ -202,12 +229,18 @@ class JobSeeker extends Component {
             </ul>
 
             <ul className="nav navbar-nav navbar-right ml-auto">
-              <li className="nav-item mr-5">
+              { this.props.isResumeCreated ?<li className="nav-item mr-5">
+                  <span className="custom-control custom-switch pt-4">
+                    <input  checked={this.state.resumePrivacy === 'private' ? true : false } onChange={()=>{this.resumePrivacyChange()}} type="checkbox" className="custom-control-input " id="customSwitch1" />
+                    <label className="custom-control-label" htmlFor="customSwitch1">{this.state.resumePrivacy === 'private' ? 'Resume Private' : 'Resume Public' }</label>
+                  </span>
+              </li> : null }
+              {/* <li className="nav-item mr-5">
                 <Link to="/" className="nav-link notifications">
                   <i className="fa fa-bell-o"></i>
                   <span className="badge">1</span>
                 </Link>
-              </li>
+              </li> */}
               {/* <li className="nav-item">
                 <a href="/" className="nav-link messages">
                   <i className="fa fa-envelope-o"></i>
@@ -215,18 +248,17 @@ class JobSeeker extends Component {
                 </a>
               </li> */}
               <li className="nav-item dropdown">
-                <a
-                  href="/"
+                <span
                   data-toggle="dropdown"
-                  className="nav-link dropdown-toggle user-action"
+                  className="nav-link dropdown-toggle user-action pt-4"
                 >
                   <img
                     src={process.env.PUBLIC_URL + '/profile.jpg'}
                     className="avatar"
                     alt="Avatar"
                   />
-                  Paula Wilson
-                </a>
+                  {this.props.name}
+                </span>
                 <ul className="dropdown-menu">
                   {/* <li>
                     <a href="/" className="dropdown-item">
@@ -320,7 +352,7 @@ class JobSeeker extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {region:state.region,companies:state.companies,category:state.category,_id:state._id,auth_token:state.auth_token,isResumeCreated:state.isResumeCreated};
+  return {region:state.region,companies:state.companies,category:state.category,_id:state._id,auth_token:state.auth_token,isResumeCreated:state.isResumeCreated , name: state.name};
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
@@ -332,4 +364,5 @@ const mapDispatchToProps = (dispatch) => {
     dispatch
   );
 };
+
 export default connect(mapStateToProps, mapDispatchToProps) (JobSeeker);

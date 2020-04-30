@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch,Link,  Route , Redirect} from 'react-router-dom';
+import { Switch,Link,  Route } from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {   } from "./redux/actions";

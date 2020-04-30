@@ -4,7 +4,8 @@ export  function login(user) {
     return async (dispatch) => {
         try {
             const response = await axios.post('http://localhost:3001/api/users/sign-in',user);
-            
+            if(response.headers.auth_token)
+            localStorage.setItem('jwtToken',response.headers.auth_token);
             return dispatch({type:'SUCCESS-SIGNIN',payload:{
                 role:response.data.role,
                 date:response.data.date,
@@ -29,7 +30,7 @@ export function setUserType(role,_id) {
     return async (dispatch) => {
         try {
              const response = await axios.put('http://localhost:3001/api/users/role',{role : role ,_id : _id});
-             
+             localStorage.setItem('jwtToken',response.headers.auth_token);
              return dispatch({type:'SET-USER-ROLE',payload:{role:response.data,auth_token:response.headers.auth_token}});
         } catch (error) {
              return dispatch({type:'UNSUCCESS'});

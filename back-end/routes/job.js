@@ -60,7 +60,7 @@ router.get('/', varify , async (req, res, next) => {
       const jobs = await Job.find({ location :location.toLowerCase()});
       res.status(200).send(jobs);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
 
@@ -75,7 +75,7 @@ router.get('/', varify , async (req, res, next) => {
       })
       res.status(200).send(jobArray);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
   
@@ -90,7 +90,7 @@ router.get('/', varify , async (req, res, next) => {
       })
       res.status(200).send(jobArray);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
 
@@ -99,7 +99,7 @@ router.get('/', varify , async (req, res, next) => {
       const jobs = await Job.find({ company_name : company_name.toLowerCase() });
       res.status(200).send(jobs);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
 
@@ -108,7 +108,7 @@ router.get('/', varify , async (req, res, next) => {
       const jobs = await Job.find({ role : role.toLowerCase() });
       res.status(200).send(jobs);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
   else if(jobId){
@@ -116,7 +116,7 @@ router.get('/', varify , async (req, res, next) => {
       const job = await Job.findById(jobId);
       res.status(200).send(job);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
   else if(recruiter_Id){
@@ -124,7 +124,7 @@ router.get('/', varify , async (req, res, next) => {
       const jobs = await Job.find({ user_id : recruiter_Id });
       res.status(200).send(jobs);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   } else {
     res.send([]);
@@ -163,4 +163,5 @@ try{
   res.status(500).send(error);
 }
 })
+
 module.exports = router;

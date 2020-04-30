@@ -22,7 +22,7 @@ router.post('/', varify , varifyRecruiter , savedResumeValidation, async (req, r
     });
 
   try {
-    const saved_resume = await savedResume.save();
+    await savedResume.save();
     res.status(200).send('saved');
   } catch (error) {
     res.status(400).send(error);
@@ -37,7 +37,7 @@ router.get('/:_id', varify, varifyRecruiter, async (req, res, next) => {
       const savedResumes = await SavedResume.find({ saver_id : _id });
       res.status(200).send(savedResumes);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   
 });

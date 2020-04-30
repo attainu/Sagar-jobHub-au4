@@ -48,16 +48,16 @@ router.get('/:_id', varify , async (req, res, next) => {
       const resume = await Resume.findById(req.params._id);
       res.status(200).send(resume);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } else { 
     try {
       const resumeExist = await Resume.findOne({ user_id: req.params._id });
-      if (resumeExist) return res.status(200).send(true);
+      if (resumeExist) return res.status(200).send(resumeExist.privacy);
       else
       res.status(200).send(false);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   }
   
@@ -71,7 +71,7 @@ router.get('/', varify , async (req, res, next) => {
       const resumes = await Resume.find({ location :location.toLowerCase()});
       res.status(200).send(resumes);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
 
@@ -94,7 +94,7 @@ router.get('/', varify , async (req, res, next) => {
       })
       res.status(200).send(resumeArray);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   }
   
@@ -119,7 +119,7 @@ router.get('/', varify , async (req, res, next) => {
       })
       res.status(200).send(resumeArray);
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   } else {
     res.send([]);
@@ -127,4 +127,14 @@ router.get('/', varify , async (req, res, next) => {
 
 });
 
+router.put('/resume-privacy', async (req,res,next) => {
+try {
+  const user_id = req.body.user_id;
+  const privacy = req.body.privacy;
+  const updatedPrivacy = await Resume.updateOne({user_id:user_id},{privacy : privacy});
+  res.status(200).send(updatedPrivacy);
+}catch (error){
+  res.status(500).send(error);
+}
+})
 module.exports = router;

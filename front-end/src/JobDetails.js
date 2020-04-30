@@ -8,10 +8,6 @@ import Moment from "react-moment";
 import "moment-timezone";
 
 class JobDetails extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick = () => {};
 
   render() {

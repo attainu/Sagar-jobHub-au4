@@ -96,11 +96,11 @@ class Recruiter extends Component {
               //Total number of Accepted/Rejected/Pending Resumes
               response.data.map((applier)=>{
                 if(applier.status === "accepted")
-                this.setState({ TotalNumberOfAcceptedResumes:this.state.TotalNumberOfAcceptedResumes + 1 });
+                return this.setState({ TotalNumberOfAcceptedResumes:this.state.TotalNumberOfAcceptedResumes + 1 });
                 else if(applier.status === "rejected")
-                this.setState({ TotalNumberOfRejectedResumes:this.state.TotalNumberOfRejectedResumes + 1 });
+                return this.setState({ TotalNumberOfRejectedResumes:this.state.TotalNumberOfRejectedResumes + 1 });
                 else
-                this.setState({ TotalNumberOfPendingResumes:this.state.TotalNumberOfPendingResumes + 1 });
+                return this.setState({ TotalNumberOfPendingResumes:this.state.TotalNumberOfPendingResumes + 1 });
               })
             }
           })
@@ -175,7 +175,7 @@ class Recruiter extends Component {
                     className="avatar"
                     alt="Avatar"
                   />
-                  Paula Wilson
+                  {this.props.name}
                 </a>
                 <ul className="dropdown-menu">
                   {/* <li>
@@ -283,7 +283,7 @@ class Recruiter extends Component {
           </div>
           <div className='col-4 p-5'>
             <div className="card bg-light mb-3 text-center shadow-lg border-secondary" >
-            <div className="card-header font-weight-bolder">Total number of ....</div>
+            <div className="card-header font-weight-bolder">........................</div>
             <div className="card-body">
               <h1 className="card-title font-weight-bolder">...</h1>
             </div>
@@ -296,7 +296,7 @@ class Recruiter extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {_id:state._id,auth_token:state.auth_token};
+  return {_id:state._id,auth_token:state.auth_token , name: state.name};
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(

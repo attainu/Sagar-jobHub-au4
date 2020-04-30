@@ -5,9 +5,6 @@ import { bindActionCreators } from "redux";
 import {} from "./redux/actions";
 import axios from 'axios';
 
-import Moment from "react-moment";
-import "moment-timezone";
-
 class Accepted extends Component {
   constructor(props) {
     super(props);

@@ -5,9 +5,6 @@ import { bindActionCreators } from "redux";
 import {} from "./redux/actions";
 import axios from 'axios';
 
-import Moment from "react-moment";
-import "moment-timezone";
-
 class Appliers extends Component {
   constructor(props) {
     super(props);
@@ -101,7 +98,7 @@ class Appliers extends Component {
   handleClick = async (appliedJobId,status,index) => {
     
     try {
-      const response = await axios.put(`http://localhost:3001/api/applied-jobs/${appliedJobId}/${status}`,
+      await axios.put(`http://localhost:3001/api/applied-jobs/${appliedJobId}/${status}`,
       {
         headers: {
             'auth_token': this.props.auth_token,

@@ -125,6 +125,8 @@ class MySavedResumes extends Component {
                 </span>
               </div>
             </div>
+            else 
+            return null;
           }
           )}
         </div>        
