@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route , Redirect } from "react-router-dom";
 import {connect} from "react-redux";
+import {bindActionCreators} from 'redux';
+import {getUserByToken} from './redux/actions';
 import "./Main.css";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
@@ -20,13 +22,24 @@ import MySavedResume from './MySavedResume';
 import MyPostedJobs from  './MyPostedJobs';
 
 class Main extends Component {
+  constructor(props){
+    super(props);
+    // this.isLoggedIn();
+  }
+
+  isLoggedIn = () => {
+    if(!this.props.isLoggedIn && localStorage.getItem('jwtToken'))
+    this.props.getUserByToken()
+    return true; 
+  } 
 
   render() {
+    this.isLoggedIn();
     return (
       <main>
         <Switch>
           <Route exact path="/" >
-            {this.props.isLoggedIn ? this.props.role === "null" ? <UserType/> : this.props.role === "jobSeeker" ? <JobSeeker /> : <Recruiter/>  : <Redirect to="/sign-in" push={true}/>}
+            { this.props.isLoggedIn ? this.props.role === "null" ? <UserType/> : this.props.role === "jobSeeker" ? <JobSeeker /> : <Recruiter/>  : <Redirect to="/sign-in" push={true}/>}
           </Route>
           <Route  path="/sign-up" component={SignUp} />
           <Route  path="/sign-in">
@@ -66,7 +79,6 @@ class Main extends Component {
             {this.props.isLoggedIn && this.props.role === "recruiter"  ? <MyPostedJobs/> : <Redirect to='/' push={true} /> }
           </Route>
         </Switch>
-        {/* <MyPostedJobs/> */}
       </main>
     );
   }
@@ -76,6 +88,6 @@ const mapStateToProps = (state) => {
   return {isLoggedIn:state.isLoggedIn , role : state.role, job:state.job,resume:state.resume};
 } 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return bindActionCreators ({ getUserByToken } , dispatch);
 }
 export default connect(mapStateToProps,mapDispatchToProps) (Main);

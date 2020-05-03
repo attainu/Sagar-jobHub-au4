@@ -1,12 +1,13 @@
 .bg {
   background-image: url("https://scx2.b-cdn.net/gfx/news/2017/work.jpg");
+  /* https://kanepartners.net/wp-content/uploads/2016/08/Positive-Work-Environment-Tips-e1470054537688.jpg */
   /* Set rules to fill background */
   min-height: 100%;
   min-width: 1024px;
 	
   /* Set up proportionate scaling */
   width: 100%;
-  height: auto;
+  height: 100%;
 	
   /* Set up positioning */
   position: fixed;

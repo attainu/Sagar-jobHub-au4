@@ -100,5 +100,14 @@ router.put('/role', async (req, res, next) => {
   }
 })
 
+/* GET get saved resumes */ 
+router.get('/jwt-varify', varify, async (req, res, next) => {
+    try {
+      res.status(200).send(req.user);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+});
+
 
 module.exports = router;

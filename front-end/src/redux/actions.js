@@ -39,7 +39,7 @@ export function setUserType(role,_id) {
 }
 
 export function resumeNotCreated() {
-     return {type:"RESUME-NOT-CREATED"}
+    return {type:"RESUME-NOT-CREATED"}
 };
 
 export function jobSearchResult(jobs) {
@@ -108,4 +108,27 @@ export function savedResume(savedResume) {
 
 export function logOut(){
     return {type:'LOGOUT'}
+}
+
+export function getUserByToken(){
+    return async (dispatch) => {
+        try {
+             const response = await axios.get('http://localhost:3001/api/users/jwt-varify', 
+             {
+                 headers: {
+                     'auth_token': localStorage.getItem('jwtToken'),
+                 }
+             });
+             return dispatch({type:'SUCCESS-SIGNIN',payload:{
+                role:response.data.role,
+                date:response.data.date,
+                _id:response.data._id,
+                name:response.data.name,
+                email:response.data.email,
+                auth_token:localStorage.getItem('jwtToken')
+             }});
+        } catch (error) {
+             return dispatch({type:'ERROR'});
+        }
+    }
 }

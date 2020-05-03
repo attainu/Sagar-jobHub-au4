@@ -207,7 +207,7 @@ class JobSeeker extends Component {
                 </Link>
               </li>
               <li className="nav-item ml-5"> 
-                <span onClick={()=>{this.myJobs()}} className="pt-4 nav-link">
+                <span onClick={()=>{this.myJobs()}} className=" pt-4 nav-link" style={{ cursor: 'pointer'}}>
                   My Jobs
                 </span>
               </li>
@@ -230,9 +230,9 @@ class JobSeeker extends Component {
 
             <ul className="nav navbar-nav navbar-right ml-auto">
               { this.props.isResumeCreated ?<li className="nav-item mr-5">
-                  <span className="custom-control custom-switch pt-4">
-                    <input  checked={this.state.resumePrivacy === 'private' ? true : false } onChange={()=>{this.resumePrivacyChange()}} type="checkbox" className="custom-control-input " id="customSwitch1" />
-                    <label className="custom-control-label" htmlFor="customSwitch1">{this.state.resumePrivacy === 'private' ? 'Resume Private' : 'Resume Public' }</label>
+                  <span className="custom-control custom-switch pt-4" >
+                    <input  checked={this.state.resumePrivacy === 'private' ? true : false } onChange={()=>{this.resumePrivacyChange()}} type="checkbox" className="custom-control-input " id="customSwitch1" style={{ cursor: 'pointer'}}/>
+                    <label className="custom-control-label" htmlFor="customSwitch1" style={{ cursor: 'pointer'}}>{this.state.resumePrivacy === 'private' ? 'Resume Private' : 'Resume Public' }</label>
                   </span>
               </li> : null }
               {/* <li className="nav-item mr-5">
@@ -251,6 +251,7 @@ class JobSeeker extends Component {
                 <span
                   data-toggle="dropdown"
                   className="nav-link dropdown-toggle user-action pt-4"
+                  style={{ cursor: 'pointer'}}
                 >
                   <img
                     src={process.env.PUBLIC_URL + '/profile.jpg'}
