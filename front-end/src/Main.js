@@ -23,18 +23,29 @@ import MyPostedJobs from  './MyPostedJobs';
 
 class Main extends Component {
   constructor(props){
-    super(props);
-    // this.isLoggedIn();
+  super(props);
+  this.state = {
+    userStatus:''
+  }
+}
+
+  isLoggedIn = async () => {
+    if(!this.props.isLoggedIn && localStorage.getItem('jwtToken')){
+    var actionRespose = await this.props.getUserByToken()
+    if(actionRespose.type === 'SUCCESS-SIGNIN')
+    this.setState({userStatus:'SIGNIN-WITH-TOKEN'}) 
+    }else{
+      this.setState({userStatus:'TOKEN-NOT-FOUND'})
+    } 
   }
 
-  isLoggedIn = () => {
-    if(!this.props.isLoggedIn && localStorage.getItem('jwtToken'))
-    this.props.getUserByToken()
-    return true; 
-  } 
+  componentDidMount = () => {
+    this.isLoggedIn();
+  }  
 
   render() {
-    this.isLoggedIn();
+    if(!this.state.userStatus)
+    return null;
     return (
       <main>
         <Switch>

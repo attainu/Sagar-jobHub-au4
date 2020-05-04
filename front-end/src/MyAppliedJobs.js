@@ -61,7 +61,7 @@ class MyAppliedJobs extends Component {
         <div className='row'>
         <div className='col-3'></div>
         <div className='col-6 mb-5'>
-          { (this.state.status === 'done' && this.state.appliedJobs.length === '0' ) ?
+          { this.state.status === 'done' && this.state.appliedJobs.length === 0  ?
           <div  className="card text-center mt-5 shadow-lg p-1  rounded-pill border border-danger" >
             <div className="card-body">
               <h4 className="card-title">SORRY</h4>

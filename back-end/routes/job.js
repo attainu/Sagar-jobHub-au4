@@ -42,12 +42,6 @@ router.get('/', varify , async (req, res, next) => {
   const { jobTitle , location , company_name , role , jobId , recruiter_Id} = req.query;
   
   function checkSkills(skills,jobTitle){
-    // skills.map((skill) => {
-    //   console.log(skill,jobTitle)
-    //   if(skill === jobTitle)
-    //   return true;
-    // })
-    // return false;
     for (const key in skills) {
       if(skills[key] === jobTitle)
       return true;

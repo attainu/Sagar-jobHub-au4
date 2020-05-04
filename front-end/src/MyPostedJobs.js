@@ -79,7 +79,7 @@ class MyPostedJobs extends Component {
             {this.state.jobs.map((job,index)=>{   
             return <div key={index} className="card text-center  shadow p-1 mb-5  rounded border border-dark" >
                 <div className="card-body btn" onClick={()=>{this.handleClick(index)}}>
-                  <h4 className="card-title m-0 p-0 text-capitalize" >{job.jobtitle}</h4>
+                  <h4 className="card-title m-0 p-0 text-capitalize d-inline-block text-truncate" style={{"maxWidth": "350px"}} >{job.jobtitle}</h4>
                   <p className="card-text  m-1 text-uppercase">{job.company_name}</p>
                   <p className="card-text m-1 text-monospace text-lowercase">
                     <span className="mr-4">

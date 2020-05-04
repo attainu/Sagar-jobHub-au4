@@ -102,7 +102,6 @@ class SignUp extends Component {
         });
       return;
     }
-    console.log("in the way");
     // user OBJ
     let user = {
       email: this.state.email,

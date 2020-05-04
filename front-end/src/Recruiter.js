@@ -26,11 +26,11 @@ class Recruiter extends Component {
   handleChange = (e) => {
     switch (e.target.name) {
       case "resumeTitle": {
-        this.setState({ resumeTitle: e.target.value },()=>{console.log(this.state.resumeTitle)});
+        this.setState({ resumeTitle: e.target.value });
         break;
       }
       case "location": {
-        this.setState({ location: e.target.value },()=>{console.log(this.state.location)});
+        this.setState({ location: e.target.value });
         break;
       }
       default:
@@ -42,7 +42,7 @@ class Recruiter extends Component {
     e.preventDefault();
 
     if (!this.state.resumeTitle && !this.state.location) {
-        console.log("both fields can't be empty")
+        alert("both fields can't be empty")
         return;
     }
 
@@ -51,7 +51,7 @@ class Recruiter extends Component {
 
   //  API call
   searchResumes = async (resumeTitle, location) => {
-    console.log("resumeTitle", resumeTitle,'location',location);
+    
     try {
         const response = await axios.get(`http://localhost:3001/api/resumes?location=${location}&resumeTitle=${resumeTitle}`,
         {
@@ -63,7 +63,7 @@ class Recruiter extends Component {
         this.setState({redirect:true})
 
     } catch (error) {
-        console.log("there is an error", error.response);
+        alert("SORRY, there is a problem.");
     }
     
   };

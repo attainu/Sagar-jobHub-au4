@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { signedUp } from "./redux/actions";
@@ -32,6 +33,9 @@ class ResumeForm extends Component {
       // alert
       alert: false,
       alertMessage: "minimum one skill is required",
+      //redirecting
+      redirect:''
+
     };
   }
 
@@ -40,76 +44,76 @@ class ResumeForm extends Component {
   handleChange = (e) => {
     switch (e.target.name) {
       case "first_name": {
-        this.setState({ first_name: e.target.value },()=>{console.log(this.state.first_name)});
+        this.setState({ first_name: e.target.value });
         break;
       }
       case "last_name": {
-        this.setState({ last_name: e.target.value },()=>{console.log(this.state.last_name)});
+        this.setState({ last_name: e.target.value });
         break;
       }
       case "location": {
-        this.setState({ location: e.target.value },()=>{console.log(this.state.location)});
+        this.setState({ location: e.target.value });
         break;
       }
       case "experience": {
-        this.setState({ experience: e.target.value },()=>{console.log(this.state.experience)});
+        this.setState({ experience: e.target.value });
         break;
       }
       case "resume_headline": {
-        this.setState({ resume_headline: e.target.value },()=>{console.log(this.state.resume_headline)});
+        this.setState({ resume_headline: e.target.value });
         break;
       }
       case "current_salary": {
-        this.setState({ current_salary: e.target.value },()=>{console.log(this.state.current_salary)});
+        this.setState({ current_salary: e.target.value });
         break;
       }
       case "current_salary_check": {
-        this.setState({ show_salary: !this.state.show_salary },()=>{console.log(this.state.show_salary)});
+        this.setState({ show_salary: !this.state.show_salary });
         break;
       }
       case "phone_number": {
-        this.setState({ phone_number: e.target.value },()=>{console.log(this.state.phone_number)});
+        this.setState({ phone_number: e.target.value });
         break;
       }
       case "phone_check": {
-        this.setState({ show_phone: !this.state.show_phone },()=>{console.log(this.state.show_phone)});
+        this.setState({ show_phone: !this.state.show_phone });
         break;
       }
       case "privacy": {
-        this.setState({ privacy: e.target.value },()=>{console.log(this.state.privacy)});
+        this.setState({ privacy: e.target.value });
         break;
       }
       case "course": {
-        this.setState({ course: e.target.value },()=>{console.log(this.state.course)});
+        this.setState({ course: e.target.value });
         break;
       }
       case "college_university": {
-        this.setState({ college_university: e.target.value },()=>{console.log(this.state.college_university)});
+        this.setState({ college_university: e.target.value });
         break;
       }
       case "college_university_location": {
-        this.setState({ college_university_location: e.target.value },()=>{console.log(this.state.college_university_location)});
+        this.setState({ college_university_location: e.target.value });
         break;
       }
       case "education_from_month": {
-        this.setState({ education_from_month: e.target.value },()=>{console.log(this.state.education_from_month)});
+        this.setState({ education_from_month: e.target.value });
         break;
       }
       case "education_from_year": {
-        this.setState({ education_from_year: e.target.value },()=>{console.log(this.state.education_from_year)});
+        this.setState({ education_from_year: e.target.value });
         break;
       }
 
       case "education_to_month": {
-        this.setState({ education_to_month: e.target.value },()=>{console.log(this.state.education_to_month)});
+        this.setState({ education_to_month: e.target.value });
         break;
       }
       case "education_to_year": {
-        this.setState({ education_to_year: e.target.value },()=>{console.log(this.state.education_to_year)});
+        this.setState({ education_to_year: e.target.value });
         break;
       }
       case "skill": {
-        this.setState({ skill: e.target.value },()=>{console.log(this.state.skill)});
+        this.setState({ skill: e.target.value });
         break;
       }
       default:
@@ -120,7 +124,7 @@ class ResumeForm extends Component {
 
   handleClick = () => {
    if(this.state.skill)
-   this.setState({skills: [ this.state.skill , ...this.state.skills ]})
+   this.setState({skills: [ this.state.skill , ...this.state.skills ]},()=>{this.setState({skill : '' })})
   }
 
   handleSubmit = (e) => {
@@ -131,7 +135,7 @@ class ResumeForm extends Component {
     }
 
 
-    console.log("in the way");
+    
     // resume OBJ
     let resume = {
          // user_id included
@@ -162,22 +166,25 @@ class ResumeForm extends Component {
 
   //  API call
   saveResume = async(resume, target) => {
-    console.log(resume);
+    
       try {
-          const response = await axios.post("http://localhost:3001/api/resumes", resume , 
+          await axios.post("http://localhost:3001/api/resumes", resume , 
           {
               headers: {
                   'auth_token': this.props.auth_token,
               }
           });
-          console.log(response)
-          // this.props.history.push("/");
+          
+          this.setState({redirect : '/'});
       } catch (error) {
-          console.log("there is an error", error.response);
+          alert('SORRY , there is a problem while Submiting.')
       }
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     return (
       <div className="container pl-5 pr-5 pb-5 pt-5 ">
         <div className="pl-5 pr-5 pb-5  border border-info shadow-lg rounded">
@@ -718,7 +725,7 @@ class ResumeForm extends Component {
             <h3 className="text-info ml-5  text-left mb-4" >Skill</h3>
                 <div className="form-row mb-1">
                   <div className="col-5">
-                    <input type="text" onChange={(e)=>{this.handleChange(e)}}  required={true} name="skill" className="form-control" placeholder="Type your Skill then press Add Button"/>
+                    <input type="text" onChange={(e)=>{this.handleChange(e)}}   value={this.state.skill} name="skill" className="form-control" placeholder="Type your Skill then press Add Button"/>
                   </div>
                   <div className="col-2">
                     <button type="button" className="form-control btn btn-info "  onClick={()=>{this.handleClick()}}> + ADD SKILL </button>

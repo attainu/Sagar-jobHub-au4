@@ -130,7 +130,7 @@ const reducer = (state = initialState, action) => {
             // search data
             copyOfState.resumes = [];
             copyOfState.resume = null;
-            localStorage. removeItem('jwtToken');
+            localStorage.removeItem('jwtToken');
             return copyOfState;
         }
         default:

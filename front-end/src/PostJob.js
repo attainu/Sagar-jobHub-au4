@@ -40,8 +40,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         location: e.target.value
-                    }, () => {
-                        console.log(this.state.location)
                     });
                     break;
                 }
@@ -49,8 +47,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         company_name: e.target.value
-                    }, () => {
-                        console.log(this.state.company_name)
                     });
                     break;
                 }
@@ -58,8 +54,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         total_employee: e.target.value
-                    }, () => {
-                        console.log(this.state.total_employee)
                     });
                     break;
                 }
@@ -67,8 +61,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         your_name: e.target.value
-                    }, () => {
-                        console.log(this.state.your_name)
                     });
                     break;
                 }
@@ -76,8 +68,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         phone_number: e.target.value
-                    }, () => {
-                        console.log(this.state.phone_number)
                     });
                     break;
                 }
@@ -85,8 +75,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         jobtitle: e.target.value
-                    }, () => {
-                        console.log(this.state.jobtitle)
                     });
                     break;
                 }
@@ -94,8 +82,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         role: e.target.value
-                    }, () => {
-                        console.log(this.state.role)
                     });
                     break;
                 }
@@ -103,8 +89,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         job_type: e.target.value
-                    }, () => {
-                        console.log(this.state.job_type)
                     });
                     break;
                 }
@@ -112,8 +96,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         min_experience: e.target.value
-                    }, () => {
-                        console.log(this.state.min_experience)
                     });
                     break;
                 }
@@ -121,8 +103,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         max_experience: e.target.value
-                    }, () => {
-                        console.log(this.state.max_experience)
                     });
                     break;
                 }
@@ -130,8 +110,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         min_salary: e.target.value
-                    }, () => {
-                        console.log(this.state.min_salary)
                     });
                     break;
                 }
@@ -139,8 +117,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         max_salary: e.target.value
-                    }, () => {
-                        console.log(this.state.max_salary)
                     });
                     break;
                 }
@@ -148,8 +124,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         maximum_hires: e.target.value
-                    }, () => {
-                        console.log(this.state.maximum_hires)
                     });
                     break;
                 }
@@ -157,8 +131,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         description: e.target.value
-                    }, () => {
-                        console.log(this.state.description)
                     });
                     break;
                 }
@@ -166,8 +138,6 @@ class PostJob extends Component {
                 {
                     this.setState({
                         skill: e.target.value
-                    }, () => {
-                        console.log(this.state.skill)
                     });
                     break;
                 }
@@ -192,7 +162,6 @@ class PostJob extends Component {
             return;
         }
 
-        console.log("in the way");
         // job OBJ
         let job = {
             // user_id included
@@ -220,14 +189,13 @@ class PostJob extends Component {
     //  API call
     saveJob = async(job, target) => {
         try {
-            const response = await axios.post("http://localhost:3001/api/jobs", job , 
+            await axios.post("http://localhost:3001/api/jobs", job , 
             {
                 headers: {
                     'auth_token': this.props.auth_token,
                 }
             }
             );
-            console.log(response)
             alert('Job Posted Successfully')
             this.setState({redirect:'/'})
             

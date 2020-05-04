@@ -206,8 +206,8 @@ class JobSeeker extends Component {
                   Home
                 </Link>
               </li>
-              <li className="nav-item ml-5"> 
-                <span onClick={()=>{this.myJobs()}} className=" pt-4 nav-link" style={{ cursor: 'pointer'}}>
+              <li className="nav-item ml-5">
+                <span onClick={ this.props.isResumeCreated ? ()=>{this.myJobs()} : null } className=" pt-4 nav-link "  style={ this.props.isResumeCreated ? { cursor: 'pointer'} : { cursor: 'pointer', color : '#CCCCCC'} }>
                   My Jobs
                 </span>
               </li>

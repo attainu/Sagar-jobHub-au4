@@ -45,7 +45,8 @@ router.get('/:_id', varify , async (req, res, next) => {
 
   if(req.user.role === 'recruiter'){
     try {
-      const resume = await Resume.findById(req.params._id);
+      // const resume = await Resume.findById(req.params._id);
+      const resume = await Resume.findOne({ user_id: req.params._id });
       res.status(200).send(resume);
     } catch (error) {
       res.status(500).send(error);
@@ -86,7 +87,7 @@ router.get('/', varify , async (req, res, next) => {
           resumeArray.push(resume);
         }else if(resume.skills.length){
           resume.skills.map((skill)=>{
-            if(skill.toLowerCase().includes(resumeTitle.toLowerCase())) {
+            if(skill.toLowerCase() === resumeTitle.toLowerCase()) {
             resumeArray.push(resume);
             }
           })

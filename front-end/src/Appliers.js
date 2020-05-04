@@ -49,7 +49,7 @@ class Appliers extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+      
     }
   }
 
@@ -85,7 +85,7 @@ class Appliers extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+      
     }
   }
 
@@ -109,7 +109,7 @@ class Appliers extends Component {
       this.setState({appliersResumes:copyOfAppliersResumes})
       
     }catch(error){
-      console.log(error.response)
+      
     }
 
   }
