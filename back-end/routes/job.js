@@ -98,9 +98,21 @@ router.get('/', varify , async (req, res, next) => {
   }
 
   else if(role){
+    // try {
+    //   const jobs = await Job.find({ role : role.toLowerCase() });
+    //   res.status(200).send(jobs);
+    // } catch (error) {
+    //   res.status(500).send(error);
+    // }
     try {
-      const jobs = await Job.find({ role : role.toLowerCase() });
-      res.status(200).send(jobs);
+      let jobArray = [];
+      const jobs = await Job.find();
+      jobs.map((job)=>{
+      if(job.role.toLowerCase().includes(role.toLowerCase()) || job.jobtitle.toLowerCase().includes(role.toLowerCase()) ) {
+        jobArray.push(job)
+      }
+      })
+      res.status(200).send(jobArray);
     } catch (error) {
       res.status(500).send(error);
     }

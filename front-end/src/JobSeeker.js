@@ -221,11 +221,11 @@ class JobSeeker extends Component {
                   My Applyed Jobs
                 </Link>
               </li>
-              <li className="nav-item ml-5">
+              {/* <li className="nav-item ml-5">
                 <Link to="/" className="nav-link">
                  Create Alert
                 </Link>
-              </li>
+              </li> */}
             </ul>
 
             <ul className="nav navbar-nav navbar-right ml-auto">

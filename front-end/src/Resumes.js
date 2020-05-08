@@ -27,7 +27,7 @@ class Resumes extends Component {
   render() {
     return (
       <div className='container'>
-        {this.state.redirect ?  <Redirect push  to="/resume-details" /> : null }
+        {this.state.redirect ?  <Redirect push  to="/resume-details" /> : null}
         <div className='row'>
         <div className='col-3'></div>
         <div className='col-6 mb-5'>

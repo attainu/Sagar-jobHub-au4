@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { signedUp } from "./redux/actions";
+import {  resumeCreated } from "./redux/actions";
 import axios from "axios";
 
 class ResumeForm extends Component {
@@ -174,7 +174,7 @@ class ResumeForm extends Component {
                   'auth_token': this.props.auth_token,
               }
           });
-          
+          this.props.resumeCreated();
           this.setState({redirect : '/'});
       } catch (error) {
           alert('SORRY , there is a problem while Submiting.')
@@ -767,7 +767,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      signedUp,
+      resumeCreated
     },
     dispatch
   );

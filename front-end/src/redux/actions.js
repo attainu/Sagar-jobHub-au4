@@ -42,6 +42,10 @@ export function resumeNotCreated() {
     return {type:"RESUME-NOT-CREATED"}
 };
 
+export function resumeCreated() {
+    return {type:"RESUME-CREATED"}
+};
+
 export function jobSearchResult(jobs) {
     return {type:"JOB-SEARCH-RESULT",payload:jobs}
 };
