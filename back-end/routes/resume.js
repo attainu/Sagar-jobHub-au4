@@ -42,14 +42,22 @@ router.post('/', varify , varifyJobseeker , resumeValidation, async (req, res, n
 
 /* GET get a Resume  */
 router.get('/:_id', varify , async (req, res, next) => {
-
+  const {resume_id} = req.query;
   if(req.user.role === 'recruiter'){
-    try {
-      // const resume = await Resume.findById(req.params._id);
-      const resume = await Resume.findOne({ user_id: req.params._id });
-      res.status(200).send(resume);
-    } catch (error) {
-      res.status(500).send(error);
+    if(resume_id){
+      try {
+        const resume = await Resume.findById(req.params._id);
+        res.status(200).send(resume);
+      } catch (error) {
+          res.status(500).send(error);
+      }
+    } else {
+      try {
+        const resume = await Resume.findOne({ user_id: req.params._id });
+        res.status(200).send(resume);
+      } catch (error) {
+          res.status(500).send(error);
+      }
     }
   } else { 
     try {

@@ -3,10 +3,10 @@ import {Link , Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { savedResume  } from "./redux/actions";
-import axios from 'axios';
-
 import Moment from 'react-moment';
 import 'moment-timezone';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class MySavedResumes extends Component {
   constructor(props){
@@ -21,21 +21,23 @@ class MySavedResumes extends Component {
   componentDidMount = async () => {
     
       try {
-      const response = await axios.get(`http://localhost:3001/api/saved-resumes/${this.props._id}`, 
+      const response = await axios.get(`/api/saved-resumes/${this.props._id}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
           }
       });
+      
       if(response.data.length){
         response.data.map( async (resume)=> {
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${resume.resume_id}`,
+            const response = await axios.get(`/api/resumes/${resume.resume_id}?resume_id=1`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
                 }
             });
+           
             let obj = response.data;
                 obj.added_date = resume.date;
                 this.setState({resumes:[...this.state.resumes,obj]});
@@ -44,7 +46,7 @@ class MySavedResumes extends Component {
       }
       this.setState({status:'done'});
       } catch (error) {
-        console.log(error.response)
+        
       }
 
   }

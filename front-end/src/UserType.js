@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import { setUserType } from "./redux/actions";
 import "./UserType.css";
+
 class UserType extends Component {
   
   handleClick = (e) => {

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import {  } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {} from "./redux/actions";
 
 import Moment from "react-moment";
 import "moment-timezone";

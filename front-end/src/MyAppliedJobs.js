@@ -3,10 +3,10 @@ import {Link , Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { appliedJob  } from "./redux/actions";
-import axios from 'axios';
-
 import Moment from 'react-moment';
 import 'moment-timezone';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class MyAppliedJobs extends Component {
   constructor(props){
@@ -20,7 +20,7 @@ class MyAppliedJobs extends Component {
 
   componentDidMount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props._id}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props._id}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -29,7 +29,7 @@ class MyAppliedJobs extends Component {
       if(response.data.length){
         response.data.map( async (job)=> {
           // 
-            const response = await axios.get(`http://localhost:3001/api/jobs?jobId=${job.job_id}`,
+            const response = await axios.get(`/api/jobs?jobId=${job.job_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,

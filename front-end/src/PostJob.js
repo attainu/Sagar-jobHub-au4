@@ -3,7 +3,8 @@ import {connect} from "react-redux";
 import {Redirect, Link} from 'react-router-dom';
 import {bindActionCreators} from "redux";
 import {signedUp} from "./redux/actions";
-import axios from "axios";
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class PostJob extends Component {
     constructor(props) {
@@ -189,7 +190,7 @@ class PostJob extends Component {
     //  API call
     saveJob = async(job, target) => {
         try {
-            await axios.post("http://localhost:3001/api/jobs", job , 
+            await axios.post("/api/jobs", job , 
             {
                 headers: {
                     'auth_token': this.props.auth_token,

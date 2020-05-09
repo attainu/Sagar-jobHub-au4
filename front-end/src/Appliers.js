@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import {  } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {} from "./redux/actions";
-import axios from 'axios';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class Appliers extends Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class Appliers extends Component {
 
   componentDidMount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -33,7 +32,7 @@ class Appliers extends Component {
           
           if(job.status === 'pending'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -55,7 +54,7 @@ class Appliers extends Component {
 
   updateAppliersResumes = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -69,7 +68,7 @@ class Appliers extends Component {
          
           if(job.status === 'pending'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -98,7 +97,7 @@ class Appliers extends Component {
   handleClick = async (appliedJobId,status,index) => {
     
     try {
-      await axios.put(`http://localhost:3001/api/applied-jobs/${appliedJobId}/${status}`,
+      await axios.put(`/api/applied-jobs/${appliedJobId}/${status}`,
       {
         headers: {
             'auth_token': this.props.auth_token,

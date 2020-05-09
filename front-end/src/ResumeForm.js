@@ -3,7 +3,9 @@ import {Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {  resumeCreated } from "./redux/actions";
-import axios from "axios";
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
+
 
 class ResumeForm extends Component {
   constructor(props) {
@@ -168,7 +170,7 @@ class ResumeForm extends Component {
   saveResume = async(resume, target) => {
     
       try {
-          await axios.post("http://localhost:3001/api/resumes", resume , 
+          await axios.post("/api/resumes", resume , 
           {
               headers: {
                   'auth_token': this.props.auth_token,

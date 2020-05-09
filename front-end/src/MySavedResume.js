@@ -26,7 +26,7 @@ class MySavedResume extends Component {
                     <i className="fa fa-inr"></i>
                     <span className="font-weight-bold"> Current Salary :</span>
                     <span className="ml-2">{this.props.resume.show_salary ? this.props.resume.current_salary:'*******'}</span>
-                  {console.log(this.props.resume.show_salary)}
+                 
                   </span>
                 </p>
                 <p>
@@ -91,7 +91,7 @@ class MySavedResume extends Component {
                 {" "}
                 <span className="text-muted">Current Salary : </span>{" "}
                 {this.props.resume.show_salary ? this.props.resume.current_salary:'*******'}
-                {console.log(this.props.resume.show_salary)}
+                
               </p>
             </div>
 
@@ -106,7 +106,7 @@ class MySavedResume extends Component {
                 {" "}
                 <span className="text-muted">Mobile : </span>{" "}
                 {this.props.resume.show_phone ? this.props.resume.phone_number:'*******'}
-                {console.log(this.props.resume.show_phone)}
+                
               </p>
             </div>
 

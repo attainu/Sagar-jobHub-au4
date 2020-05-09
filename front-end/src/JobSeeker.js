@@ -4,7 +4,8 @@ import "./JobSeeker.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { resumeNotCreated , jobSearchResult , logOut } from "./redux/actions";
-import axios from "axios";
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class JobSeeker extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class JobSeeker extends Component {
   // check resume created or not
   componentDidMount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/resumes/${this.props._id}`, {
+      const response = await axios.get(`/api/resumes/${this.props._id}`, {
         headers: {
             'auth_token': this.props.auth_token
         }
@@ -67,7 +68,7 @@ class JobSeeker extends Component {
   //  API call
   searchJob = async (jobTitle, location) => {
       try {
-          const response = await axios.get(`http://localhost:3001/api/jobs?jobTitle=${jobTitle}&location=${location}`,
+          const response = await axios.get(`/api/jobs?jobTitle=${jobTitle}&location=${location}`,
           {
               headers: {
                   'auth_token': this.props.auth_token,
@@ -88,7 +89,7 @@ class JobSeeker extends Component {
 
   handleRegionClick = async (region) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/jobs?location=${region}`,
+      const response = await axios.get(`/api/jobs?location=${region}`,
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -107,7 +108,7 @@ class JobSeeker extends Component {
 
   handleCompanyClick = async (company) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/jobs?company_name=${company}`,
+      const response = await axios.get(`/api/jobs?company_name=${company}`,
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -126,7 +127,7 @@ class JobSeeker extends Component {
 
   handleCategoryClick = async (category) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/jobs?role=${category}`,
+      const response = await axios.get(`/api/jobs?role=${category}`,
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -146,7 +147,7 @@ class JobSeeker extends Component {
   //  API call for my-jobs
   myJobs = async () => {
     try {
-        const response = await axios.get(`http://localhost:3001/api/jobs/my-jobs`,
+        const response = await axios.get(`/api/jobs/my-jobs`,
         {
             headers: {
                 'auth_token': this.props.auth_token,
@@ -169,7 +170,7 @@ class JobSeeker extends Component {
     privacy = 'private';
     
     try {
-      const response = await axios.put(`http://localhost:3001/api/resumes/resume-privacy`,{ privacy:privacy , user_id : this.props._id }
+      const response = await axios.put(`/api/resumes/resume-privacy`,{ privacy:privacy , user_id : this.props._id }
       // {
       //     headers: {
       //       "Content-Type": "text/plain",

@@ -1,9 +1,10 @@
-const axios = require('axios');
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 export  function login(user) {
     return async (dispatch) => {
         try {
-            const response = await axios.post('http://localhost:3001/api/users/sign-in',user);
+            const response = await axios.post(`/api/users/sign-in`,user);
             if(response.headers.auth_token)
             localStorage.setItem('jwtToken',response.headers.auth_token);
             return dispatch({type:'SUCCESS-SIGNIN',payload:{
@@ -29,7 +30,7 @@ export function setUserType(role,_id) {
    
     return async (dispatch) => {
         try {
-             const response = await axios.put('http://localhost:3001/api/users/role',{role : role ,_id : _id});
+             const response = await axios.put('/api/users/role',{role : role ,_id : _id});
              localStorage.setItem('jwtToken',response.headers.auth_token);
              return dispatch({type:'SET-USER-ROLE',payload:{role:response.data,auth_token:response.headers.auth_token}});
         } catch (error) {
@@ -58,7 +59,7 @@ export function jobIndex(jobIndex) {
 export function applyJob(job_id,applier_id,auth_token , index) {   
     return async (dispatch) => {
         try {
-             const response = await axios.post('http://localhost:3001/api/applied-jobs',{job_id : job_id ,applier_id : applier_id}, 
+             const response = await axios.post('/api/applied-jobs',{job_id : job_id ,applier_id : applier_id}, 
              {
                  headers: {
                      'auth_token': auth_token,
@@ -89,7 +90,7 @@ export function resumeIndex(resumeIndex) {
 export function saveResume(resume_id,saver_id,auth_token , index) {   
     return async (dispatch) => {
         try {
-             const response = await axios.post('http://localhost:3001/api/saved-resumes',{resume_id : resume_id ,saver_id : saver_id}, 
+             const response = await axios.post('/api/saved-resumes',{resume_id : resume_id ,saver_id : saver_id}, 
              {
                  headers: {
                      'auth_token': auth_token,
@@ -117,7 +118,7 @@ export function logOut(){
 export function getUserByToken(){
     return async (dispatch) => {
         try {
-             const response = await axios.get('http://localhost:3001/api/users/jwt-varify', 
+             const response = await axios.get('/api/users/jwt-varify', 
              {
                  headers: {
                      'auth_token': localStorage.getItem('jwtToken'),

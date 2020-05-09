@@ -3,7 +3,8 @@ import {  } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {} from "./redux/actions";
-import axios from 'axios';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class Accepted extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Accepted extends Component {
 
   componentDidMount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -33,7 +34,7 @@ class Accepted extends Component {
           
           if(job.status === 'accepted'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -49,13 +50,13 @@ class Accepted extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+      
     }
   }
 
   updateAppliersResumes = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -69,7 +70,7 @@ class Accepted extends Component {
          
           if(job.status === 'accepted'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -85,7 +86,7 @@ class Accepted extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+     
     }
   }
 

@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Switch,Link,  Route } from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {   } from "./redux/actions";
-import axios from 'axios';
 import JobDetails from './JobDetails';
 import Appliers from './Appliers';
 import Accepted from './Accepted';
@@ -11,6 +9,9 @@ import Rejected from './Rejected';
 
 import Moment from 'react-moment';
 import 'moment-timezone';
+
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class MyPostedJobs extends Component {
   constructor(props){
@@ -32,7 +33,7 @@ class MyPostedJobs extends Component {
   componentDidMount = async () => {
     
     try {
-      const response = await axios.get(`http://localhost:3001/api/jobs?recruiter_Id=${this.props._id}`, 
+      const response = await axios.get(`/api/jobs?recruiter_Id=${this.props._id}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -45,7 +46,7 @@ class MyPostedJobs extends Component {
         this.setState({status:'done'});
       } 
     } catch(error) { 
-      console.log(error.response)
+      
     }     
   }
 

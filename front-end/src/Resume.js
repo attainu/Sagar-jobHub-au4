@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import {  } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {saveResume} from "./redux/actions";
@@ -16,7 +15,6 @@ class Resume extends Component {
   }
 
   handleAddClick = (ResumeId , index) => {
-    console.log('ResumeId',ResumeId)
     this.props.saveResume(ResumeId,this.props._id,this.props.auth_token , index);
    }
 

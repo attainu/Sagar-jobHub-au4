@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux"; 
 import {signedUp} from "./redux/actions";
-import axios from "axios";
 import "./SignUp.css";
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
 
 class SignUp extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class SignUp extends Component {
   signupUser = async (user,target) => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/users/sign-up",
+        "/api/users/sign-up",
         user
       );
 

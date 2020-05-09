@@ -4,7 +4,9 @@ import { Link , Redirect} from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {resumeSearchResult , logOut} from "./redux/actions";
-import axios from 'axios';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
+
 
 class Recruiter extends Component {
   constructor(props) {
@@ -53,7 +55,7 @@ class Recruiter extends Component {
   searchResumes = async (resumeTitle, location) => {
     
     try {
-        const response = await axios.get(`http://localhost:3001/api/resumes?location=${location}&resumeTitle=${resumeTitle}`,
+        const response = await axios.get(`/api/resumes?location=${location}&resumeTitle=${resumeTitle}`,
         {
             headers: {
                 'auth_token': this.props.auth_token,
@@ -71,7 +73,7 @@ class Recruiter extends Component {
   componentDidMount = async () => {
     // Total Number of Posted Jobs
     try {
-      const response = await axios.get(`http://localhost:3001/api/jobs?recruiter_Id=${this.props._id}`, 
+      const response = await axios.get(`/api/jobs?recruiter_Id=${this.props._id}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -83,7 +85,7 @@ class Recruiter extends Component {
         
         //Total Number of Appliers 
         response.data.map( async (job)=> {
-          const response = await axios.get(`http://localhost:3001/api/applied-jobs/${job._id}`,
+          const response = await axios.get(`/api/applied-jobs/${job._id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -107,7 +109,7 @@ class Recruiter extends Component {
         // 
       }
     } catch(error) { 
-      console.log("NOT Fetched Total Number of Posted Jobs.")
+      alert("NOT Fetched Total Number of Posted Jobs.")
     }
 
     

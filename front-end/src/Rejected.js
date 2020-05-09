@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import {  } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {} from "./redux/actions";
-import axios from 'axios';
+const Axios = require('axios');
+let axios = Axios.create({baseURL: 'https://jobhub-backend.herokuapp.com'});
+
 
 
 class Rejected extends Component {
@@ -20,7 +20,7 @@ class Rejected extends Component {
 
   componentDidMount = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -34,7 +34,7 @@ class Rejected extends Component {
           
           if(job.status === 'rejected'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -50,13 +50,13 @@ class Rejected extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+      
     }
   }
 
   updateAppliersResumes = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/applied-jobs/${this.props.jobId}`, 
+      const response = await axios.get(`/api/applied-jobs/${this.props.jobId}`, 
       {
           headers: {
               'auth_token': this.props.auth_token,
@@ -70,7 +70,7 @@ class Rejected extends Component {
          
           if(job.status === 'rejected'){
           // 
-            const response = await axios.get(`http://localhost:3001/api/resumes/${job.applier_id}`,
+            const response = await axios.get(`/api/resumes/${job.applier_id}`,
             {
                 headers: {
                     'auth_token': this.props.auth_token,
@@ -86,7 +86,7 @@ class Rejected extends Component {
       this.setState({status:'done'});
 
     } catch (error) {
-      console.log(error.response)
+      
     }
   }
 
